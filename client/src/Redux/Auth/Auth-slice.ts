@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { LoginThunk } from './Auth-thunk'
+import { LoginThunk, RegistrationThunk } from './Auth-thunk'
 const initialState = {
-  username: '',
+  email: '',
   password: '',
   token: '',
   error: '',
@@ -13,8 +13,8 @@ const AuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    getUserName: (state, action) => {
-      state.username = action.payload
+    getEmail: (state, action) => {
+      state.email = action.payload
     },
     getPassword: (state, action) => {
       state.password = action.payload
@@ -36,9 +36,23 @@ const AuthSlice = createSlice({
         state.error = 'Something Went Wrong'
         console.log(action.error.message)
       })
+      .addCase(RegistrationThunk.pending, (state) => {
+        state.loading = true
+        state.error = ''
+      })
+      .addCase(RegistrationThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.token = action.payload
+        state.succsess = 'user has been registered'
+      })
+      .addCase(RegistrationThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = 'Something Went Wrong'
+        console.log(action.error.message)
+      })
   },
 })
 
-export const { getUserName, getPassword } = AuthSlice.actions
+export const { getEmail, getPassword } = AuthSlice.actions
 
 export default AuthSlice.reducer

@@ -1,14 +1,15 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
+import Login from './Pages/Auth/Login'
 
 function App() {
   const router = [
     {
       path: '/',
       element: <div className="bg-red-600 w-[100%] h-[200px]">hello</div>,
-      // outlet: [{ path: 'products', element: <Products /> }],
+      outlet: [],
     },
-    // { path: '/login', element: <Login /> },
+    { path: '/login', element: <Login /> },
   ]
 
   type ReactRouteType = {
