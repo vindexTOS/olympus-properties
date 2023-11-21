@@ -31,15 +31,39 @@ export class PropertyService {
 
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} property`;
+  async findOne(id: string) {
+    try {
+      const property = await this.prismaService.property.findUnique({where:{id}})
+      return property
+    } catch (error) {
+      throw new HttpException(error, error.status);
+    }
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
-    return `This action updates a #${id} property`;
+  async update(id: string, updatePropertyDto: UpdatePropertyDto) {
+    try {
+      const CreatedProperty = await this.prismaService.property.update({
+        where:{id},
+        data: {
+          ...updatePropertyDto,
+        }
+        
+      })
+      return  CreatedProperty
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} property`;
+  async remove(id: string) {
+    try {
+      const CreatedProperty = await this.prismaService.property.delete({where:{id}})
+      return  CreatedProperty
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+
   }
 }

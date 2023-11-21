@@ -1,34 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import Layout from './Layout'
+import Login from './Pages/Auth/Login'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const router = [
+    {
+      path: '/',
+      element: <div className="bg-red-600 w-[100%] h-[200px]">hello</div>,
+      outlet: [],
+    },
+    { path: '/login', element: <Login /> },
+  ]
+
+  type ReactRouteType = {
+    path: string
+    element: JSX.Element
+    outlet?: ReactRouteType[]
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Layout>
+      <Routes>
+        {router.map((route: ReactRouteType) => {
+          const { path, element, outlet } = route
+          if (outlet) {
+            return (
+              <Route key={path} path={path} element={element}>
+                {outlet.map((outletRoute) => {
+                  const { path, element } = outletRoute
+                  return <Route key={path} path={path} element={element} />
+                })}
+              </Route>
+            )
+          } else {
+            return <Route key={path} path={path} element={element} />
+          }
+        })}
+      </Routes>
+    </Layout>
   )
 }
 
