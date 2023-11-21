@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
+import { JwtAuthGuard } from 'src/guard/jwtAuthGuard';
 
 @Controller('property')
 export class PropertyController {
@@ -21,7 +22,7 @@ export class PropertyController {
   findOne(@Param('id') id: string) {
     return this.propertyService.findOne(id);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto) {
     return this.propertyService.update(id, updatePropertyDto);

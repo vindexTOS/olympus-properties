@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -25,9 +25,12 @@ export class PropertyService {
       })
       return CreatedProperty
     } catch (error) {
-      throw new HttpException(error, error.status);
+      throw new HttpException(error.message, error.status);
     }
   }
+
+  
+
 
 
 
@@ -39,6 +42,8 @@ export class PropertyService {
       throw new HttpException(error, error.status);
     }
   }
+
+
 
   async update(id: string, updatePropertyDto: UpdatePropertyDto) {
     try {
