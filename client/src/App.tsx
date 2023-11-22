@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import Login from './Pages/Auth/Login'
+import Home from './Pages/Home/Home'
 
 function App() {
   const router = [
     {
       path: '/',
-      element: <div className="bg-red-600 w-[100%] h-[200px]">hello</div>,
+      element: <Home />,
       outlet: [],
     },
     { path: '/login', element: <Login /> },

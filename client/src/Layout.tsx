@@ -10,7 +10,7 @@ function Layout({ children }: { children: any }) {
     (state: any) => state.AuthReducer,
   )
   return (
-    <div>
+    <div className="backgroundphoto">
       <Loading loading={loading} />
       <Success success={succsess} />
       <Error error={error} />
