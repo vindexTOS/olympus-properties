@@ -4,21 +4,21 @@ import { FeatureType, PropertyType } from "@prisma/client";
 export class CreatePropertyDto {
     @IsString()
     @IsNotEmpty()
-    @MinLength(3, { message: 'Property name should be at least 3 characters long' })
+    @MinLength(3, { message: 'propertyName should be at least 3 characters long' })
     propertyName: string;
 
-    @IsEnum(PropertyType, { message: 'Invalid property type' })
+    @IsEnum(PropertyType, { message: 'Invalid property PropertyType' })
     propertyType: PropertyType;
 
-    @IsEnum(FeatureType, { message: 'Invalid feature type' })
+    @IsEnum(FeatureType, { message: 'Invalid FeatureType' })
     featureType: FeatureType;
 
     @IsNumber()
-    @Min(0, { message: 'Price should be a positive number' })
+    @Min(0, { message: 'price should be a positive number' })
     price: number;
 
     @IsNumber()
-    @Min(1800, { message: 'Build year should be at least 1800' })
+    @Min(1800, { message: 'buildYear should be at least 1800' })
     buildYear: number;
 
     @IsString()
@@ -26,12 +26,12 @@ export class CreatePropertyDto {
     location: string;
 
     @IsNumber()
-    @Min(0, { message: 'Square area should be a positive number' })
+    @Min(0, { message: 'sqArea area should be a positive number' })
     sqArea: number;
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(10, { message: 'Description should be at least 10 characters long' })
+    @MinLength(10, { message: 'description should be at least 10 characters long' })
     description: string;
 }
  

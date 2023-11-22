@@ -36,14 +36,14 @@ enum FeatureType {
 
 enum PropertyStatus {
   SOLD
-  ACTIVE 
+  ACTIVE
   PENDING
 }
 
 model Property {
   id           String            @id @default(auto()) @map("_id") @db.ObjectId
-  status       PropertyStatus @default(PENDING)
-  propertyName    String
+  status       PropertyStatus    @default(PENDING)
+  propertyName String
   propertyType PropertyType
   featureType  FeatureType
   price        Int
@@ -52,12 +52,16 @@ model Property {
   location     String
   sqArea       Int
   description  String
-  uploadetAt   DateTime @default(now())
+  uploadetAt   DateTime          @default(now())
+}
+
+model PropertyOwner {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 }
 
 model PropertyPicture {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  PicturePath String   @unique
-  Propertyid  String   @db.ObjectId
-  property    Property @relation(fields: [Propertyid], references: [id])
+  picturePath String   @unique
+  propertyId  String   @db.ObjectId
+  property    Property @relation(fields: [propertyId], references: [id])
 }
