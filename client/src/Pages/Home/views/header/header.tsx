@@ -1,5 +1,5 @@
 import React from 'react'
-import Filter from '../components/Filter'
+import Filter from './components/Filter'
 function header() {
   return (
     <div className="bg-brand-green/60 w-[100%] h-[600px] flex flex-col gap-20 items-center justify-center ">
