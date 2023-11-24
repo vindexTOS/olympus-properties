@@ -29,11 +29,30 @@ export const LanguageContextProvider = ({
 
   let translation = {
     form: {
+      titles: {
+        infoHeader: lang
+          ? 'დაამატეთ თქვენი უძრავი ქონება'
+          : 'Add your real estate',
+        infoH1: lang ? 'შეავსე ფორმა' : 'Fill out the form',
+        infoH2: lang ? 'გამოაგზავნე ინფორმაცია' : 'Send information',
+        infoH3: lang
+          ? 'დაელოდე განცხადების დამტიკცებას'
+          : 'Wait for the approval',
+        formHeader1: lang ? 'თქვენი პირადი მონაცემები' : 'Your personal data',
+        formHeader2: lang ? 'ინფორმაცია საკუთრებაზე' : 'Property information',
+        formHeader3: lang
+          ? 'დაამატეთ საკუთრების ფოტოები'
+          : 'Add property photos',
+      },
       userInfo: {
         email: lang ? 'ემაილი' : 'Email',
         number: lang ? 'ტელეფონის ნომერი' : 'Phone Number',
         firstName: lang ? 'სახელი' : 'First Name',
         lastName: lang ? 'გვარი' : 'Last Name',
+      },
+      propartyInfo: {
+        location: lang ? 'ლოკაცია' : 'Location',
+        feature: lang ? 'გარიგების ტიპი' : 'Inquiry Type',
       },
     },
   }
