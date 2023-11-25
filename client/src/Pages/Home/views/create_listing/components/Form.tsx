@@ -5,9 +5,9 @@ import ImageUploader from '../../../../../components/Inputs/ImageUpload'
 import Textarea from '../../../../../components/Inputs/Textarea'
 import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
 function Form() {
-  const { translation } = UseLanguageContext()
+  const { translation, refrenceData } = UseLanguageContext()
   const { form } = translation
-  const { userInfo } = form
+  const { userInfo, titles, propartyInfo } = form
   const style = {
     mainDiv: `bg-[#26a59a]/95 w-[60%] h-[930px] rounded-r-[9px] flex-col flex p-5 gap-7`,
     userInfo: ` flex flex-col items-center gap-4`,
@@ -19,7 +19,7 @@ function Form() {
     <div className={style.mainDiv}>
       <div className={style.userInfo}>
         <h1 className="text-[1.6rem] font-bold text-brand-white font-geo ">
-          თქვენი პირადი მონაცემები
+          {titles.formHeader1}
         </h1>
         <div className={style.userInfoInputWrapper}>
           <div className="w-[90%]">
@@ -50,35 +50,45 @@ function Form() {
       </div>
       <div className={style.propartyInfo}>
         <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
-          ინფორმაცია საკუთრებაზე
+          {titles.formHeader2}
         </h1>
         <div className={style.propartyDropDowns}>
-          <FormDropDown data={['1', '2', '3']} title="drop down" />
-          <FormDropDown data={['1', '2', '3']} title="drop down" />
-          <FormDropDown data={['1', '2', '3']} title="drop down" />
+          <FormDropDown
+            data={refrenceData.location.data}
+            title={propartyInfo.location}
+          />
+          <FormDropDown
+            data={refrenceData.featureType.data}
+            title={propartyInfo.feature}
+          />
+          <FormDropDown
+            data={refrenceData.propertyType.data}
+            title={propartyInfo.propartyType}
+          />
         </div>
         <div className={style.propartyDropDowns}>
           <FormInput
-            title={userInfo.lastName}
+            title={propartyInfo.price}
             placeholder="test"
             inputType="text"
           />
           <FormInput
-            title={userInfo.lastName}
+            title={propartyInfo.sqArea}
             placeholder="test"
             inputType="text"
           />
+
           <FormInput
-            title={userInfo.lastName}
+            title={propartyInfo.buidlYear}
             placeholder="test"
             inputType="text"
           />
         </div>
       </div>
-      <Textarea title="decription" />
+      <Textarea title={propartyInfo.desc} />
 
       <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
-        დაამატეთ საკუთრების ფოტოები
+        {titles.formHeader3}
       </h1>
       <ImageUploader />
     </div>

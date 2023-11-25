@@ -25,7 +25,7 @@ export const LanguageContextProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [lang, setLang] = useState<boolean>(false)
+  const [lang, setLang] = useState<boolean>(true)
 
   let translation = {
     form: {
@@ -44,6 +44,7 @@ export const LanguageContextProvider = ({
           ? 'დაამატეთ საკუთრების ფოტოები'
           : 'Add property photos',
       },
+
       userInfo: {
         email: lang ? 'ემაილი' : 'Email',
         number: lang ? 'ტელეფონის ნომერი' : 'Phone Number',
@@ -53,6 +54,11 @@ export const LanguageContextProvider = ({
       propartyInfo: {
         location: lang ? 'ლოკაცია' : 'Location',
         feature: lang ? 'გარიგების ტიპი' : 'Inquiry Type',
+        propartyType: lang ? 'საკუთრების ტიპი' : 'Property Type',
+        sqArea: lang ? 'კვადრატობა' : 'Squar meter',
+        price: lang ? 'ფასი' : 'Price',
+        buidlYear: lang ? 'აშენების თარიღი' : 'Build year',
+        desc: lang ? 'ახწერა' : 'description',
       },
     },
   }
@@ -86,10 +92,8 @@ export const LanguageContextProvider = ({
         { title: lang ? 'სიღნაღი' : 'Signagi', key: 'signagi' },
         { title: lang ? 'ბორჯომი' : 'Borjomi', key: 'borjomi' },
         { title: lang ? 'ახალტაბახი' : 'Akhaltsikhe', key: 'akhaltsikhe' },
-        { title: lang ? 'მცხეთა' : 'Mtskheta', key: 'mtskheta' },
-        { title: lang ? 'მარნეული' : 'Marnueli', key: 'marnueli' },
-        { title: lang ? 'წყალტუბო' : 'Tsalkubo', key: 'tsalkubo' },
-        { title: lang ? 'დუშეთი' : 'Dusheti', key: 'dusheti' },
+         { title: lang ? 'მარნეული' : 'Marnueli', key: 'marnueli' },
+         { title: lang ? 'დუშეთი' : 'Dusheti', key: 'dusheti' },
         { title: lang ? 'ბაღდათი' : 'Bagdati', key: 'bagdati' },
         { title: lang ? 'წალკა' : 'Tsalka', key: 'tsalka' },
         { title: lang ? 'თეთრელი' : 'Tetritskaro', key: 'tetritskaro' },
@@ -97,14 +101,7 @@ export const LanguageContextProvider = ({
         { title: lang ? 'თიანეთი' : 'Tianeti', key: 'tianeti' },
         { title: lang ? 'ზარე' : 'Zare', key: 'zare' },
         { title: lang ? 'მარტვილი' : 'Martvili', key: 'martvili' },
-        {
-          title: lang ? 'ნინო ემგარულის' : 'Nino Eemgarulis',
-          key: 'nino-eemgarulis',
-        },
-        {
-          title: lang ? 'თბილისი სამებარულო' : 'Tbilisi Samebarulo',
-          key: 'tbilisi-samebarulo',
-        },
+
         { title: lang ? 'ქობულეთი' : 'Kobuleti', key: 'kobuleti' },
         { title: lang ? 'ფოთი' : 'Poti', key: 'poti' },
         { title: lang ? 'წყალტუბო' : 'Tsalkubo', key: 'tsalkubo' },
@@ -122,8 +119,7 @@ export const LanguageContextProvider = ({
           title: lang ? 'დედოფლისწყარო' : 'Dedoplistsqaro',
           key: 'dedoplistsqaro',
         },
-        { title: lang ? 'წყალტუბო' : 'Tsalkubo', key: 'tsalkubo' },
-        { title: lang ? 'მცხეთა' : 'Mtskheta', key: 'mtskheta' },
+         { title: lang ? 'მცხეთა' : 'Mtskheta', key: 'mtskheta' },
       ],
     },
   }

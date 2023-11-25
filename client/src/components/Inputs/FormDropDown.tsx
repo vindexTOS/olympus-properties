@@ -1,9 +1,12 @@
 import React, { FC, useState } from 'react'
 import useOutClick from '../../hooks/useOutClick'
 import { RiArrowDropUpFill, RiArrowDropDownFill } from 'react-icons/ri'
-
+type FormDataType = {
+  title: string
+  key: string
+}
 type FormDropDownProps = {
-  data: string[]
+  data: FormDataType[]
   title: string
 }
 
@@ -11,7 +14,7 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
   const style = {
     mainDiv: ` relative    w-[100%]   max_smm:right-0  max_xl:w-[15rem] `,
     inputWrapper: `relative h-10 w-full    max_xl:w-[15rem]`,
-    input: `peer text-[#ef4a75] shadow-md h-[3rem] w-[100%] bg-brand-white rounded-[5px]   `,
+    input: `peer text-gray-900 text-center shadow-md h-[3rem] w-[100%] bg-brand-white rounded-[5px]   `,
     p: `text-[14px] font-bold text-brand-white ml-2`,
 
     inputDivWrapper: `flex items-center justify-center   max_xl:relative    `,
@@ -36,7 +39,7 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
         className={style.inputDivWrapper}
       >
         <div className={style.inputWrapper}>
-          <div className={style.input}></div>
+          <div className={style.input}>{data[0].title}</div>
         </div>
         <div className={style.arrowDiv} onClick={() => setDropDown(!dropDown)}>
           {dropDown ? <RiArrowDropUpFill /> : <RiArrowDropDownFill />}
@@ -47,8 +50,8 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
         <div className={style.mappedDiv}>
           {data.map((val, i) => {
             return (
-              <div key={i} className={style.selectItem}>
-                {val}
+              <div key={val.key} className={style.selectItem}>
+                {val.title}
               </div>
             )
           })}
