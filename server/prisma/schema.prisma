@@ -40,8 +40,18 @@ enum PropertyStatus {
   PENDING
 }
 
+model PropertyOwner {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  fullName    String
+  email       String     @unique
+  phoneNumber String
+  property    Property[]
+}
+
 model Property {
   id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId      String            @db.ObjectId
+  Owner        PropertyOwner     @relation(fields: [ownerId], references: [id])
   status       PropertyStatus    @default(PENDING)
   propertyName String
   propertyType PropertyType
@@ -53,10 +63,6 @@ model Property {
   sqArea       Int
   description  String
   uploadetAt   DateTime          @default(now())
-}
-
-model PropertyOwner {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
 }
 
 model PropertyPicture {

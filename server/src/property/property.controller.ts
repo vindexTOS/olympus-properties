@@ -22,14 +22,14 @@ export class PropertyController {
   findOne(@Param('id') id: string) {
     return this.propertyService.findOne(id);
   }
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto) {
-    return this.propertyService.update(id, updatePropertyDto);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto) {
+  //   return this.propertyService.update(id, updatePropertyDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.propertyService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.propertyService.remove(id);
+  // }
 }

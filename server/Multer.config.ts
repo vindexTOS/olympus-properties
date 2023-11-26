@@ -4,7 +4,7 @@ import { extname } from 'path';
 import * as path from 'path';
 import { BadRequestException } from '@nestjs/common';
 const dirName = __dirname;
-const imagePath = path.join(dirName + `productPictures`);
+const imagePath = path.join(dirName + `/productPictures`);
 
 // // Define a function to check if the file is an image
 const imageFileFilter = (req, file, callback) => {

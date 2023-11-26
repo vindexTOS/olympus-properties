@@ -10,7 +10,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 export class PicturesController {
   constructor(private readonly picturesService: PicturesService) {}
   @Post()
-  @UseInterceptors(FilesInterceptor('pictures', 2))
+  @UseInterceptors(FilesInterceptor('pictures', 10))
   create(@UploadedFiles() pictures: Express.Multer.File[], @Req() request : Request) {
     const propertyId = request.body.propertyId
     return this.picturesService.create(pictures,propertyId);

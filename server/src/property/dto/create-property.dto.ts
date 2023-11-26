@@ -2,11 +2,28 @@ import { IsString, IsNotEmpty, MinLength, IsNumber, IsEnum, Min } from 'class-va
 import { FeatureType, PropertyType } from "@prisma/client";
 
 export class CreatePropertyDto {
+
+    OwnerInformation:  OwnerInformation;
+    propertyInformation : PropertyInformation;
+  
+}
+export class OwnerInformation {
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(5, { message: 'owner full name should be at least 5 characters long' })
+    fullName: string;
+    @IsNotEmpty()
+    email: string;
+    @IsNotEmpty()
+    phoneNumber: string;
+}
+
+export class PropertyInformation {
+      
     @IsString()
     @IsNotEmpty()
     @MinLength(3, { message: 'propertyName should be at least 3 characters long' })
     propertyName: string;
-
     @IsEnum(PropertyType, { message: 'Invalid property PropertyType' })
     propertyType: PropertyType;
 
