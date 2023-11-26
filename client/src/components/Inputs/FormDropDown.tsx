@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import useOutClick from '../../hooks/useOutClick'
 import { RiArrowDropUpFill, RiArrowDropDownFill } from 'react-icons/ri'
+import { SelectorType } from '../../Pages/Home/views/create_listing/components/Form'
 type FormDataType = {
   title: string
   key: string
@@ -8,9 +9,18 @@ type FormDataType = {
 type FormDropDownProps = {
   data: FormDataType[]
   title: string
+  name: string
+  handleChange: (
+    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void
 }
 
-const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
+const FormDropDown: FC<FormDropDownProps> = ({
+  data,
+  title,
+  name,
+  handleChange,
+}) => {
   const style = {
     mainDiv: ` relative    w-[100%]   max_smm:right-0  max_xl:w-[15rem] `,
     inputWrapper: `relative h-10 w-full    max_xl:w-[15rem]`,
@@ -24,7 +34,20 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
   }
 
   const [dropDown, setDropDown] = useState(false)
+  const [curVal, setCurVal] = useState(data[0].title)
   const dropDownRef = React.useRef() as any
+
+  const handleSelect = (val: string) => {
+    let e = {
+      target: {
+        name,
+        value: val,
+      },
+    }
+    handleChange(e)
+    setCurVal(val)
+  }
+
   const handleDropDownCancle = () => {
     setDropDown(false)
   }
@@ -39,7 +62,7 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
         className={style.inputDivWrapper}
       >
         <div className={style.inputWrapper}>
-          <div className={style.input}>{data[0].title}</div>
+          <div className={style.input}>{curVal}</div>
         </div>
         <div className={style.arrowDiv} onClick={() => setDropDown(!dropDown)}>
           {dropDown ? <RiArrowDropUpFill /> : <RiArrowDropDownFill />}
@@ -50,7 +73,11 @@ const FormDropDown: FC<FormDropDownProps> = ({ data, title }) => {
         <div className={style.mappedDiv}>
           {data.map((val, i) => {
             return (
-              <div key={val.key} className={style.selectItem}>
+              <div
+                onClick={() => handleSelect(val.title)}
+                key={val.key}
+                className={style.selectItem}
+              >
                 {val.title}
               </div>
             )

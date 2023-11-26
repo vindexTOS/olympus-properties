@@ -13,7 +13,7 @@ export const LoginThunk = createAsyncThunk(
     const cookies = new Cookies()
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/login`,
+        `${import.meta.env.VITE_BASE_API_URL}login`,
         { ...obj },
       )
 
@@ -38,7 +38,7 @@ export const RegistrationThunk = createAsyncThunk(
     const cookies = new Cookies()
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}/register`,
+        `${import.meta.env.VITE_BASE_API_URL}register`,
         { ...obj },
       )
 

@@ -26,7 +26,7 @@ export const GeneralContextProvider = ({
   const navigation = useNavigate()
   const { token } = useSelector((state: any) => state.AuthReducer)
   const [adminData, setAdmin] = useState<UserType | any>()
-
+  // TO DO make global error handling
   return (
     <GeneralContext.Provider value={{ adminData }}>
       {children}

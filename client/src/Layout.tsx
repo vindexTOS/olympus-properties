@@ -5,17 +5,19 @@ import Loading from './components/Status-components/Loading'
 import Success from './components/Status-components/Success'
 import Error from './components/Status-components/Error'
 import Nav from './components/navbar/Nav'
+import Footer from './components/footer/Footer'
 function Layout({ children }: { children: any }) {
   const { error, succsess, loading } = useSelector(
     (state: any) => state.AuthReducer,
   )
   return (
-    <div className="backgroundphoto">
+    <div className="backgroundphoto   ">
       <Loading loading={loading} />
       <Success success={succsess} />
       <Error error={error} />
       <Nav />
       {children}
+      <Footer />
     </div>
   )
 }

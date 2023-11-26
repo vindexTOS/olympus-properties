@@ -4,9 +4,19 @@ type FormInputProps = {
   inputType: string
   placeholder: string
   title: string
+  name: string
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void
 }
 
-const FormInput: FC<FormInputProps> = ({ inputType, placeholder, title }) => {
+const FormInput: FC<FormInputProps> = ({
+  inputType,
+  placeholder,
+  name,
+  title,
+  handleChange,
+}) => {
   const style = {
     mainDiv: `w-[100%]`,
     inputWrapper: `relative h-10 w-full min-w-[200px]`,
@@ -17,7 +27,12 @@ const FormInput: FC<FormInputProps> = ({ inputType, placeholder, title }) => {
     <div className={style.mainDiv}>
       <p className={style.p}>{title}</p>
       <div className={style.inputWrapper}>
-        <input type={inputType ? inputType : 'text'} className={style.input} />
+        <input
+          onChange={(e) => handleChange(e)}
+          name={name}
+          type={inputType ? inputType : 'text'}
+          className={style.input}
+        />
       </div>
     </div>
   )

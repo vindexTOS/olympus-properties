@@ -1,19 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FormInput from '../../../../../components/Inputs/FormInput'
 import FormDropDown from '../../../../../components/Inputs/FormDropDown'
 import ImageUploader from '../../../../../components/Inputs/ImageUpload'
 import Textarea from '../../../../../components/Inputs/Textarea'
 import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
+import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from '@reduxjs/toolkit'
+export type SelectorType = {
+  target: {
+    name: string
+    value: string
+  }
+}
+
 function Form() {
   const { translation, refrenceData } = UseLanguageContext()
   const { form } = translation
-  const { userInfo, titles, propartyInfo } = form
+  const { userInfo, titles, propertyInfo } = form
   const style = {
-    mainDiv: `bg-[#26a59a]/95 w-[60%] h-[930px] rounded-r-[9px] flex-col flex p-5 gap-7`,
+    mainDiv: `bg-[#26a59a]/95 w-[60%]  h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
     userInfo: ` flex flex-col items-center gap-4`,
     userInfoInputWrapper: 'flex  gap-1 justify-around w-[100%]',
-    propartyInfo: `flex flex-col gap-5 `,
-    propartyDropDowns: `flex gap-2 `,
+    propertyInfo: `flex flex-col gap-5 `,
+    propertyDropDowns: `flex gap-2 `,
+  }
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+
+  const [images, setImages] = useState<any>([])
+  const [propertyForm, setpropertyForm] = useState({
+    email: '',
+    number: '',
+    firstName: '',
+    lastName: '',
+    location: '',
+    feature: '',
+    propertyType: '',
+    price: '',
+    sqArea: '',
+    buildYear: '',
+    title: '',
+    description: '',
+  })
+  const handleChange = (
+    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target
+    setpropertyForm((prevData) => ({ ...prevData, [name]: value }))
+  }
+
+  const HandleSubmit = () => {
+    const emptyFields = Object.entries(propertyForm).filter(
+      ([key, value]) => !value,
+    )
+    if (emptyFields.length > 0) {
+      console.log(
+        'Error: The following fields are required:',
+        emptyFields.map(([key]) => key).join(', '),
+      )
+    } else {
+      dispatch(CreatePropertyThunk(propertyForm))
+    }
   }
   return (
     <div className={style.mainDiv}>
@@ -24,23 +71,31 @@ function Form() {
         <div className={style.userInfoInputWrapper}>
           <div className="w-[90%]">
             <FormInput
+              handleChange={handleChange}
               title={userInfo.email}
+              name="email"
               placeholder="test"
               inputType="text"
             />
             <FormInput
+              handleChange={handleChange}
               title={userInfo.number}
+              name="number"
               placeholder="test"
               inputType="text"
             />
           </div>
           <div className="w-[90%]">
             <FormInput
+              handleChange={handleChange}
+              name="firstName"
               title={userInfo.firstName}
               placeholder="test"
               inputType="text"
             />
             <FormInput
+              handleChange={handleChange}
+              name="lastName"
               title={userInfo.lastName}
               placeholder="test"
               inputType="text"
@@ -48,49 +103,77 @@ function Form() {
           </div>
         </div>
       </div>
-      <div className={style.propartyInfo}>
-        <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
-          {titles.formHeader2}
-        </h1>
-        <div className={style.propartyDropDowns}>
+      <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
+        {titles.formHeader2}
+      </h1>
+      <FormInput
+        handleChange={handleChange}
+        name="title"
+        title={propertyInfo.title}
+        placeholder="test"
+        inputType="text"
+      />
+      <Textarea
+        name="description"
+        title={propertyInfo.desc}
+        handleChange={handleChange}
+      />
+      <div className={style.propertyInfo}>
+        <div className={style.propertyDropDowns}>
           <FormDropDown
+            name="location"
+            handleChange={handleChange}
             data={refrenceData.location.data}
-            title={propartyInfo.location}
+            title={propertyInfo.location}
           />
           <FormDropDown
+            name="feature"
+            handleChange={handleChange}
             data={refrenceData.featureType.data}
-            title={propartyInfo.feature}
+            title={propertyInfo.feature}
           />
           <FormDropDown
+            name="propertyType"
+            handleChange={handleChange}
             data={refrenceData.propertyType.data}
-            title={propartyInfo.propartyType}
+            title={propertyInfo.propertyType}
           />
         </div>
-        <div className={style.propartyDropDowns}>
+        <div className={style.propertyDropDowns}>
           <FormInput
-            title={propartyInfo.price}
+            handleChange={handleChange}
+            name="price"
+            title={propertyInfo.price}
             placeholder="test"
             inputType="text"
           />
           <FormInput
-            title={propartyInfo.sqArea}
+            handleChange={handleChange}
+            name="sqArea"
+            title={propertyInfo.sqArea}
             placeholder="test"
             inputType="text"
           />
 
           <FormInput
-            title={propartyInfo.buidlYear}
+            handleChange={handleChange}
+            name="buildYear"
+            title={propertyInfo.buildYear}
             placeholder="test"
             inputType="text"
           />
         </div>
       </div>
-      <Textarea title={propartyInfo.desc} />
-
       <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
         {titles.formHeader3}
       </h1>
-      <ImageUploader />
+      <ImageUploader images={images} setImages={setImages} />
+      <button
+        onClick={HandleSubmit}
+        className="bg-brand-yellow hover:bg-brand-yellow/95 text-brand-white font-bold py-2 px-4 rounded"
+      >
+        {propertyInfo.submit}
+      </button>
     </div>
   )
 }

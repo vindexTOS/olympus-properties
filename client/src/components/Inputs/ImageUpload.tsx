@@ -1,11 +1,15 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, FC } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-const ImageUploader = () => {
-  const [images, setImages] = useState<any>([])
+type ImagePropType = {
+  setImages: React.Dispatch<any>
+  images: any
+}
+
+const ImageUploader: FC<ImagePropType> = ({ setImages, images }) => {
+  // const [images, setImages] = useState<any>([])   use this localily if needed
 
   const onDrop = useCallback((acceptedFiles: any) => {
-    // Handle the uploaded files
     const newImages = acceptedFiles.map((file: any) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
@@ -23,28 +27,34 @@ const ImageUploader = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   return (
-    <div>
+    <div className={`${images.length > 0 ? 'flex' : ''}`}>
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed border-gray-300 p-4 rounded h-[120px] flex  items-center justify-center ${
+        className={` ${
+          images.length > 0 && 'w-[150px]'
+        } border-2 border-dashed cursor-pointer border-gray-300 p-4 rounded h-[120px] flex  items-center justify-center ${
           isDragActive ? 'border-blue-500' : ''
         }`}
       >
         <input {...getInputProps()} />
-        <p className="text-brand-white">
+        <p
+          className={`text-brand-white text-center ${
+            images.length > 0 && 'text-[14px]'
+          }`}
+        >
           Drag & drop images here, or click to select files
         </p>
       </div>
       <div className="flex relative  ">
-        {images.slice(0, 5).map((image: any, index: number) => (
+        {images.slice(0, 4).map((image: any, index: number) => (
           <div
             key={index}
-            className="relative flex items-center justify-center   h-[100px]"
+            className="relative flex items-center justify-center  h-[120px]"
           >
             <img
               src={image.preview}
               alt={`preview-${index}`}
-              className=" w-[150px]   h-[90px] rounded"
+              className=" w-[150px]  h-[120px] rounded"
             />
 
             <button
@@ -55,8 +65,8 @@ const ImageUploader = () => {
             </button>
           </div>
         ))}
-        {images.length > 5 && (
-          <div className="absolute text-brand-gold font-bold text-[1.5rem] bg-brand-white right-10 p-2 w-[55px] flex items-center justify-center rounded-[50%] top-5">
+        {images.length > 4 && (
+          <div className="absolute text-brand-gold font-bold text-[1.5rem] bg-brand-white right-5 p-2 w-[55px] flex items-center justify-center rounded-[50%] top-9">
             {images.length}
           </div>
         )}
