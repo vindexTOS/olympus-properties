@@ -23,6 +23,9 @@ const propertySlice = createSlice({
     setSuccsess: (state) => {
       state.succsess = ''
     },
+    getError: (state, action) => {
+      state.error = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -71,6 +74,6 @@ const propertySlice = createSlice({
   },
 })
 
-export const { getpropertys, setSuccsess } = propertySlice.actions
+export const { getpropertys, setSuccsess, getError } = propertySlice.actions
 
 export default propertySlice.reducer

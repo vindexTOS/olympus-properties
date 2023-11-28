@@ -19,7 +19,7 @@ function Filter() {
     dispatch({ type: type, payload: state })
   }
   return (
-    <div className="w-[800px] h-[170px] py-2 rounded-[7px] bg-brand-white/80 hover:bg-brand-white flex items-center justify-around flex-col">
+    <div className="w-[800px] h-[170px] py-2 rounded-[7px] bg-[#ffc000]  hover:bg-brand-white flex items-center justify-around flex-col">
       <div className="flex justify-around  gap-2 ">
         <DropDown options={['1', '2']} />
         <DropDown options={['1', '2']} />

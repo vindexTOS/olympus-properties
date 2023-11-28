@@ -8,7 +8,7 @@ import Nav from './components/navbar/Nav'
 import Footer from './components/footer/Footer'
 function Layout({ children }: { children: any }) {
   const { error, succsess, loading } = useSelector(
-    (state: any) => state.AuthReducer,
+    (state: any) => state.propertyReducer,
   )
   return (
     <div className="backgroundphoto   ">

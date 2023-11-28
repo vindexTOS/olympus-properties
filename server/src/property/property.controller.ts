@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
@@ -10,6 +19,8 @@ export class PropertyController {
 
   @Post()
   create(@Body() createPropertyDto: CreatePropertyDto) {
+    console.log(createPropertyDto);
+
     return this.propertyService.create(createPropertyDto);
   }
 

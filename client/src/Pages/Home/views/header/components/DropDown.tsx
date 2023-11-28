@@ -10,13 +10,13 @@ const CustomDropdown = ({ options }: { options: string[] }) => {
   }
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative  inline-block text-left  ">
       <div>
-        <div className="rounded-md shadow-sm w-[120px]   flex items-center justify-between">
+        <div className="  shadow-sm w-[120px]   flex items-center justify-between">
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-brand-white border border-transparent rounded-[20px] active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-indigo hover:bg-gray-400"
+            className="inline-flex justify-center w-full  h-[48px] px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-brand-white border border-transparent rounded-[8px] active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-indigo hover:bg-gray-400"
             id="options-menu"
             aria-haspopup="true"
             aria-expanded="true"

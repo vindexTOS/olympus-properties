@@ -6,10 +6,11 @@ import { TPropertyTypes } from '../../Types/propertyTypes'
 export const CreatePropertyThunk = createAsyncThunk(
   'creatProperty/post',
   async (obj: TPropertyTypes) => {
+    console.log(obj)
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}property`,
-        { obj },
+        { ...obj },
       )
 
       return res.data

@@ -46,6 +46,7 @@ const FormDropDown: FC<FormDropDownProps> = ({
     }
     handleChange(e)
     setCurVal(val)
+    setDropDown(false)
   }
 
   const handleDropDownCancle = () => {

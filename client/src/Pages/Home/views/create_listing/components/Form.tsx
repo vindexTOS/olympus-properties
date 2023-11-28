@@ -7,6 +7,7 @@ import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
 import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
 import { useDispatch } from 'react-redux'
 import { ThunkDispatch } from '@reduxjs/toolkit'
+import { getError } from '../../../../../Redux/Property/property-slice'
 export type SelectorType = {
   target: {
     name: string
@@ -54,11 +55,17 @@ function Form() {
       ([key, value]) => !value,
     )
     if (emptyFields.length > 0) {
-      console.log(
-        'Error: The following fields are required:',
-        emptyFields.map(([key]) => key).join(', '),
+      dispatch(
+        getError(
+          `'Error: The following fields are required:',
+        ${emptyFields.map(([key]) => key).join(', ')},`,
+        ),
       )
+      setTimeout(() => {
+        dispatch(getError(''))
+      }, 4000)
     } else {
+      console.log(propertyForm)
       dispatch(CreatePropertyThunk(propertyForm))
     }
   }
