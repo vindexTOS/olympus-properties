@@ -75,8 +75,8 @@ const FormDropDown: FC<FormDropDownProps> = ({
           {data.map((val, i) => {
             return (
               <div
-                onClick={() => handleSelect(val.title)}
-                key={val.key}
+                onClick={() => handleSelect(val.key)}
+                key={val.key + i}
                 className={style.selectItem}
               >
                 {val.title}

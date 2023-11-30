@@ -67,18 +67,18 @@ export const LanguageContextProvider = ({
   let refrenceData = {
     featureType: {
       data: [
-        { title: lang ? 'იყიდება' : 'Sale', key: 'sale' },
-        { title: lang ? 'ქირავდება' : 'rent', key: 'rent' },
+        { title: lang ? 'იყიდება' : 'Sale', key: 'SALE' },
+        { title: lang ? 'ქირავდება' : 'rent', key: 'RENT' },
       ],
     },
     propertyType: {
       data: [
-        { title: lang ? 'კერძო სახლი' : 'Home', key: 'home' },
-        { title: lang ? 'ბინა' : 'Apartments', key: 'apartments' },
+        { title: lang ? 'კერძო სახლი' : 'Home', key: 'HOUSE' },
+        { title: lang ? 'ბინა' : 'Apartments', key: 'APARTMENT' },
         { title: lang ? 'საოფისე ფართი' : 'Office', key: 'office' },
         {
           title: lang ? 'კომერციული ფართი' : 'Commercial Space',
-          key: 'commercial space',
+          key: 'COMMERCIAL',
         },
       ],
     },

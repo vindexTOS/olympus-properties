@@ -1,25 +1,63 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import axios from 'axios'
-import { TPropertyTypes } from '../../Types/propertyTypes'
+import { PhotoPayLoadForRedux, TPropertyTypes, TpropertyAndOwner } from '../../Types/propertyTypes'
 
 export const CreatePropertyThunk = createAsyncThunk(
   'creatProperty/post',
-  async (obj: TPropertyTypes) => {
-    console.log(obj)
+  async (obj:  TpropertyAndOwner, {dispatch}) => {
+    let {OwnerInformation,propertyInformation} = obj 
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}property`,
-        { ...obj },
+        { OwnerInformation,propertyInformation },
       )
+
+     
+      let propertyId =res.data.id
+      // console.log(res.data  ) 
+      // console.log(res  ) 
+      await dispatch(UploadPhotos({pictures:obj.pictures, propertyId}))
 
       return res.data
     } catch (error) {
       const err: any = error
+      console.log(error)
       throw new Error(err.response.data.message)
     }
   },
 )
+
+export const UploadPhotos = createAsyncThunk(
+  "uploadphotos/post",
+  async (obj:  PhotoPayLoadForRedux ) => { 
+    try {
+      const { pictures, propertyId } = obj;
+      console.log(obj)
+       const formData = new FormData();
+       pictures.forEach((file, index) => {
+        formData.append(`pictures[${index}]`, file);
+      });
+      
+       formData.append('propertyId', propertyId);
+
+
+      const res = await axios.post(`${import.meta.env.VITE_BASE_API_URL}pictures`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(obj);
+      console.log(pictures);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      const err: any = error;
+      console.error(error);
+      throw new Error(err.response.data.message);
+    }
+  }
+);
 
 export const GetAllpropertysThunk = createAsyncThunk(
   'allpropertys/get',

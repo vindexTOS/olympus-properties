@@ -3,10 +3,22 @@ import {
   CreatePropertyThunk,
   GetAllpropertysThunk,
   Updateproperty,
+  UploadPhotos,
 } from './property-thunk'
 
-const initialState = {
+
+type InitialPropertyStateType = { 
+  data: any[],
+  pictures: File[],
+  userID: string,
+  error: string,
+  succsess: string,
+  loading:boolean
+}
+
+const initialState:InitialPropertyStateType = {
   data: [],
+  pictures:[],
   userID: '',
   error: '',
   succsess: '',
@@ -20,6 +32,10 @@ const propertySlice = createSlice({
     getpropertys: (state, action) => {
       state.data = action.payload
     },
+    getPictures: (state, action) => {
+      console.log(action.payload)
+        state.pictures = action.payload 
+    }, 
     setSuccsess: (state) => {
       state.succsess = ''
     },
@@ -36,7 +52,10 @@ const propertySlice = createSlice({
       .addCase(CreatePropertyThunk.fulfilled, (state, action) => {
         state.loading = false
         console.log(action)
+        console.log("REDUX ACTIOn")
         state.succsess = 'Your property has been submited'
+        // console.log(state.pictures)
+        // action.payload.id
       })
       .addCase(CreatePropertyThunk.rejected, (state, action) => {
         state.loading = false
@@ -74,6 +93,6 @@ const propertySlice = createSlice({
   },
 })
 
-export const { getpropertys, setSuccsess, getError } = propertySlice.actions
+export const { getpropertys, setSuccsess, getError ,getPictures} = propertySlice.actions
 
 export default propertySlice.reducer

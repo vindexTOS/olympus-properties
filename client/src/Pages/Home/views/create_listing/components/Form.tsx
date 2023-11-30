@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormInput from '../../../../../components/Inputs/FormInput'
 import FormDropDown from '../../../../../components/Inputs/FormDropDown'
 import ImageUploader from '../../../../../components/Inputs/ImageUpload'
@@ -7,7 +7,9 @@ import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
 import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
 import { useDispatch } from 'react-redux'
 import { ThunkDispatch } from '@reduxjs/toolkit'
-import { getError } from '../../../../../Redux/Property/property-slice'
+import { getError,getPictures } from '../../../../../Redux/Property/property-slice'
+import { OwnerInformationBluePrint,  PropertyInformationBluePrint } from '../../../../../Types/dto-class'
+
 export type SelectorType = {
   target: {
     name: string
@@ -29,17 +31,19 @@ function Form() {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
 
   const [images, setImages] = useState<any>([])
+ 
+ 
   const [propertyForm, setpropertyForm] = useState({
     email: '',
     number: '',
     firstName: '',
     lastName: '',
-    location: '',
-    feature: '',
-    propertyType: '',
-    price: '',
-    sqArea: '',
-    buildYear: '',
+    location: 'Tbilisi',
+    feature: 'SALE',
+    propertyType: 'HOUSE',
+    price: 0,
+    sqArea: 0,
+    buildYear: 0,
     title: '',
     description: '',
   })
@@ -65,8 +69,10 @@ function Form() {
         dispatch(getError(''))
       }, 4000)
     } else {
-      console.log(propertyForm)
-      dispatch(CreatePropertyThunk(propertyForm))
+      const {email,number,firstName,lastName,location,feature,price,sqArea,buildYear ,propertyType,title,description} = propertyForm
+      let OwnerInformation = new OwnerInformationBluePrint(`${firstName} ${lastName}`, email, number)
+      let propertyInformation = new  PropertyInformationBluePrint(title,propertyType,feature,Number(price),Number(buildYear),location,Number(sqArea),description)
+      dispatch(CreatePropertyThunk({OwnerInformation,propertyInformation , pictures:images  }))
     }
   }
   return (
@@ -82,7 +88,7 @@ function Form() {
               title={userInfo.email}
               name="email"
               placeholder="test"
-              inputType="text"
+              inputType="email"
             />
             <FormInput
               handleChange={handleChange}
@@ -152,14 +158,14 @@ function Form() {
             name="price"
             title={propertyInfo.price}
             placeholder="test"
-            inputType="text"
+            inputType="number"
           />
           <FormInput
             handleChange={handleChange}
             name="sqArea"
             title={propertyInfo.sqArea}
             placeholder="test"
-            inputType="text"
+              inputType="number"
           />
 
           <FormInput
@@ -167,7 +173,7 @@ function Form() {
             name="buildYear"
             title={propertyInfo.buildYear}
             placeholder="test"
-            inputType="text"
+              inputType="number"
           />
         </div>
       </div>

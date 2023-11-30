@@ -17,6 +17,9 @@ const FormInput: FC<FormInputProps> = ({
   title,
   handleChange,
 }) => {
+
+
+   
   const style = {
     mainDiv: `w-[100%]`,
     inputWrapper: `relative h-10 w-full min-w-[200px]`,
@@ -30,7 +33,7 @@ const FormInput: FC<FormInputProps> = ({
         <input
           onChange={(e) => handleChange(e)}
           name={name}
-          type={inputType ? inputType : 'text'}
+          type={inputType }
           className={style.input}
         />
       </div>

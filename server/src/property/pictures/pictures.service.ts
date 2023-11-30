@@ -10,10 +10,14 @@ export class PicturesService {
   constructor(private readonly prismaService: PrismaService) { }
 
   async create(pictures: Express.Multer.File[], propertyId: string) {
+    console.log(pictures)
     try {
+        if (!pictures || !Array.isArray(pictures)) {
+            throw new Error('Invalid pictures data');
+        }
       const uploadedPictures = pictures.map((picture) => ({
         picturePath: picture.filename,
-        propertyId: propertyId, // Assuming propertyId is the string you want to use
+        propertyId: propertyId,  
       }));
 
       const createdPropertyPictures = await this.prismaService.propertyPicture.createMany({
