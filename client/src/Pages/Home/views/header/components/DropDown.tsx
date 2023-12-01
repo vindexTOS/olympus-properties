@@ -1,6 +1,8 @@
 import { useState } from "react";
 import useOutClick from "../../../../../hooks/useOutClick";
 import React, { FC } from "react";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 type DropDownProps = {
   options: any[];
@@ -19,7 +21,6 @@ const CustomDropdown: FC<DropDownProps> = ({
   const handleOptionClick = (option: any) => {
     setStateAction(type, option);
     let curVal: any = options.find((vl: any) => vl.key === option);
-
     setSelectedOption(curVal?.title);
     setIsOpen(false);
   };

@@ -58,7 +58,6 @@ const FormDropDown: FC<FormDropDownProps> = ({
   return (
     <div ref={dropDownRef} className={style.mainDiv}>
       <p className={style.p}>{title}</p>
-
       <div
         onClick={() => setDropDown(!dropDown)}
         className={style.inputDivWrapper}
