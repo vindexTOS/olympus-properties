@@ -1,98 +1,100 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 import {
   CreatePropertyThunk,
   GetAllpropertysThunk,
   Updateproperty,
   UploadPhotos,
-} from './property-thunk'
+} from "./property-thunk";
 
+type InitialPropertyStateType = {
+  data: any[];
+  pictures: File[];
+  userID: string;
+  error: string;
+  succsess: string;
+  loading: boolean;
+};
 
-type InitialPropertyStateType = { 
-  data: any[],
-  pictures: File[],
-  userID: string,
-  error: string,
-  succsess: string,
-  loading:boolean
-}
-
-const initialState:InitialPropertyStateType = {
+const initialState: InitialPropertyStateType = {
   data: [],
-  pictures:[],
-  userID: '',
-  error: '',
-  succsess: '',
+  pictures: [],
+  userID: "",
+  error: "",
+  succsess: "",
   loading: false,
-}
+};
 
 const propertySlice = createSlice({
-  name: 'property',
+  name: "property",
   initialState,
   reducers: {
     getpropertys: (state, action) => {
-      state.data = action.payload
+      state.data = action.payload;
     },
     getPictures: (state, action) => {
-      console.log(action.payload)
-        state.pictures = action.payload 
-    }, 
+      console.log(action.payload);
+      state.pictures = action.payload;
+    },
     setSuccsess: (state) => {
-      state.succsess = ''
+      state.succsess = "";
     },
     getError: (state, action) => {
-      state.error = action.payload
+      state.error = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(CreatePropertyThunk.pending, (state) => {
-        state.loading = true
-        state.error = ''
+        state.loading = true;
+        state.error = "";
       })
       .addCase(CreatePropertyThunk.fulfilled, (state, action) => {
-        state.loading = false
-        console.log(action)
-        console.log("REDUX ACTIOn")
-        state.succsess = 'Your property has been submited'
+        state.loading = false;
+
+        console.log("REDUX ACTIOn");
+        state.succsess = "Your property has been submited";
         // console.log(state.pictures)
         // action.payload.id
       })
       .addCase(CreatePropertyThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.error.message || 'something went wrong'
+        state.loading = false;
+        state.error = action.error.message || "something went wrong";
       })
-      .addCase(GetAllpropertysThunk.pending, (state) => {
-        state.loading = true
-        state.error = ''
+      .addCase(GetAllpropertysThunk.pending, (state, action: any) => {
+        state.data = action.payload;
+
+        state.loading = true;
+        state.error = "";
       })
       .addCase(GetAllpropertysThunk.fulfilled, (state, action) => {
-        state.loading = false
-        state.data = action.payload
-        state.succsess = 'Data Recived'
+        state.loading = false;
+        state.data = action.payload;
+        state.succsess = "Data Recived";
       })
       .addCase(GetAllpropertysThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = 'Something Went Wrong'
+        state.loading = false;
+        state.error = "Something Went Wrong";
 
-        console.log(action.error.message)
+        console.log(action.error.message);
       })
       .addCase(Updateproperty.pending, (state) => {
-        state.loading = true
-        state.error = ''
+        state.loading = true;
+        state.error = "";
       })
       .addCase(Updateproperty.fulfilled, (state, action) => {
-        state.loading = false
-        state.succsess = 'property Updated '
-        console.log(action)
+        state.loading = false;
+        state.succsess = "property Updated ";
+        console.log(action);
       })
       .addCase(Updateproperty.rejected, (state, action) => {
-        state.loading = false
-        state.error = 'Cannot Be Updated'
-        console.log(action)
-      })
+        state.loading = false;
+        state.error = "Cannot Be Updated";
+        console.log(action);
+      });
   },
-})
+});
 
-export const { getpropertys, setSuccsess, getError ,getPictures} = propertySlice.actions
+export const { getpropertys, setSuccsess, getError, getPictures } =
+  propertySlice.actions;
 
-export default propertySlice.reducer
+export default propertySlice.reducer;

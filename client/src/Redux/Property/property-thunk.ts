@@ -1,52 +1,58 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import axios from 'axios'
-import { PhotoPayLoadForRedux, TPropertyTypes, TpropertyAndOwner } from '../../Types/propertyTypes'
+import axios from "axios";
+import {
+  PhotoPayLoadForRedux,
+  TPropertyTypes,
+  TpropertyAndOwner,
+} from "../../Types/propertyTypes";
 
 export const CreatePropertyThunk = createAsyncThunk(
-  'creatProperty/post',
-  async (obj:  TpropertyAndOwner, {dispatch}) => {
-    let {OwnerInformation,propertyInformation} = obj 
+  "creatProperty/post",
+  async (obj: TpropertyAndOwner, { dispatch }) => {
+    let { OwnerInformation, propertyInformation } = obj;
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}property`,
-        { OwnerInformation,propertyInformation },
-      )
+        { OwnerInformation, propertyInformation }
+      );
 
-     
-      let propertyId =res.data.id
-      // console.log(res.data  ) 
-      // console.log(res  ) 
-      await dispatch(UploadPhotos({pictures:obj.pictures, propertyId}))
+      let propertyId = res.data.id;
+      // console.log(res.data  )
+      // console.log(res  )
+      await dispatch(UploadPhotos({ pictures: obj.pictures, propertyId }));
 
-      return res.data
+      return res.data;
     } catch (error) {
-      const err: any = error
-      console.log(error)
-      throw new Error(err.response.data.message)
+      const err: any = error;
+      console.log(error);
+      throw new Error(err.response.data.message);
     }
-  },
-)
+  }
+);
 
 export const UploadPhotos = createAsyncThunk(
   "uploadphotos/post",
-  async (obj:  PhotoPayLoadForRedux ) => { 
+  async (obj: PhotoPayLoadForRedux) => {
     try {
       const { pictures, propertyId } = obj;
-      console.log(obj)
-       const formData = new FormData();
-       pictures.forEach((file, index) => {
-        formData.append(`pictures[${index}]`, file);
+      console.log(obj);
+      const formData = new FormData();
+      pictures.forEach((file, index) => {
+        formData.append(`pictures`, file);
       });
-      
-       formData.append('propertyId', propertyId);
 
+      formData.append("propertyId", propertyId);
 
-      const res = await axios.post(`${import.meta.env.VITE_BASE_API_URL}pictures`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}pictures`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log(obj);
       console.log(pictures);
       console.log(res.data);
@@ -60,21 +66,29 @@ export const UploadPhotos = createAsyncThunk(
 );
 
 export const GetAllpropertysThunk = createAsyncThunk(
-  'allpropertys/get',
-  async () => {
+  "allpropertys/get",
+  async (querys: any) => {
+    // property?page=1&limit=1&minPrice=1000&maxPrice=2000&featureType=RENT&propertyType=HOUSE
     try {
+      const { page, limit, minPrice, maxPrice, featureType, propertyType } =
+        querys;
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_API_URL}property`,
-      )
-      return res.data
+        `${
+          import.meta.env.VITE_BASE_API_URL
+        }property?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}${
+          featureType &&
+          `&featureType=${featureType} propertyType ${propertyType`&propertyType=${propertyType}`}`
+        }`
+      );
+      return res.data;
     } catch (error) {
-      throw new Error('ERROR')
+      throw new Error("ERROR");
     }
-  },
-)
+  }
+);
 
 export const Updateproperty = createAsyncThunk(
-  'property/update',
+  "property/update",
   async (obj: TPropertyTypes) => {
     // try {
     //   const res = await axios.patch(
@@ -85,5 +99,5 @@ export const Updateproperty = createAsyncThunk(
     // } catch (error) {
     //   throw new Error('ERROR')
     // }
-  },
-)
+  }
+);

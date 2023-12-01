@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  DefaultValuePipe,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -25,8 +28,27 @@ export class PropertyController {
   }
 
   @Get()
-  findAll() {
-    return this.propertyService.findAll();
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('minPrice', new DefaultValuePipe(0), ParseIntPipe) minPrice: number,
+    @Query(
+      'maxPrice',
+      new DefaultValuePipe(Number.MAX_SAFE_INTEGER),
+      ParseIntPipe,
+    )
+    maxPrice: number,
+    @Query('featureType') featureType: string,
+    @Query('propertyType') propertyType: string,
+  ) {
+    const filters = {
+      minPrice,
+      maxPrice,
+      featureType,
+      propertyType,
+    };
+
+    return this.propertyService.findAll(page, limit, filters);
   }
 
   @Get(':id')

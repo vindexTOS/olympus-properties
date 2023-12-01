@@ -13,10 +13,36 @@ import * as fs from 'fs';
 export class PropertyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll() {
+  async findAll(page: number, limit: number, filters: any) {
     try {
-      const Properties = await this.prismaService.property.findMany();
-      return Properties;
+      const skip = (page - 1) * limit;
+
+      const whereClause = {
+        price: {
+          gte: filters.minPrice !== undefined ? filters.minPrice : 0,
+          lte:
+            filters.maxPrice !== undefined
+              ? filters.maxPrice
+              : Number.MAX_SAFE_INTEGER,
+        },
+        ...(filters.featureType !== undefined && {
+          featureType: filters.featureType,
+        }),
+        ...(filters.propertyType !== undefined && {
+          propertyType: filters.propertyType,
+        }),
+      };
+
+      const properties = await this.prismaService.property.findMany({
+        skip,
+        take: limit,
+        where: whereClause,
+        orderBy: {
+          uploadetAt: 'desc',
+        },
+      });
+
+      return properties;
     } catch (error) {
       throw new HttpException(error, error.status);
     }
@@ -31,8 +57,8 @@ export class PropertyService {
       });
 
       if (!propertyOwner) {
-        const CreateOwnerWithProperty = await this.prismaService.propertyOwner.create(
-          {
+        const CreateOwnerWithProperty =
+          await this.prismaService.propertyOwner.create({
             data: {
               ...createPropertyDto.OwnerInformation,
               property: {
@@ -42,8 +68,7 @@ export class PropertyService {
             include: {
               property: true,
             },
-          },
-        );
+          });
         return CreateOwnerWithProperty;
       }
       const property = await this.prismaService.property.create({
