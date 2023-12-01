@@ -65,7 +65,6 @@ const propertySlice = createSlice({
       .addCase(GetAllpropertysThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
-        state.succsess = "Data Recived";
       })
       .addCase(GetAllpropertysThunk.rejected, (state, action) => {
         state.loading = false;

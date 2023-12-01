@@ -40,6 +40,8 @@ export const GeneralContextProvider = ({
       maxPrice: 9000000,
       featureType: "",
       propertyType: "",
+      search: "",
+      location: "",
     };
     dispatch(GetAllpropertysThunk(query));
   }, []);

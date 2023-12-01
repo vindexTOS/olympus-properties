@@ -1,18 +1,40 @@
-import React from 'react'
-import { CiSearch } from 'react-icons/ci'
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import React, { useState } from "react";
+import { CiSearch } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import { GetAllpropertysThunk } from "../../../../../Redux/Property/property-thunk";
 
 function SearchBar() {
+  const [serach, setSearch] = useState("");
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+
+  const sendSearchQuery = () => {
+    let query = {
+      page: 1,
+      limit: 5,
+      minPrice: 0,
+      maxPrice: 9000000,
+      featureType: "",
+      propertyType: "",
+      search: serach,
+    };
+    dispatch(GetAllpropertysThunk(query));
+  };
   return (
-    <div className="bg-brand-dark-1 h-[50px] w-[80%] rounded-[80px] flex items-center justify-between  px-2 ">
+    <div className="bg-brand-green h-[50px] w-[35%] rounded-[80px] flex items-center justify-between  px-2 ">
       <input
+        onChange={(e) => setSearch(e.target.value)}
         className="bg-brand-dark-1/40  text-brand-white h-[90%] rounded-[100px] w-[100%] outline-none"
         placeholder="serach..."
       />
-      <div className="bg-brand-white flex items-center justify-center rounded-[50%] w-[50px] h-[85%] ">
+      <div
+        onClick={sendSearchQuery}
+        className="bg-brand-white flex items-center justify-center rounded-[50%] w-[50px] h-[85%] "
+      >
         <CiSearch className="text-[1.5rem] hover:scale-[1.2] cursor-pointer" />
       </div>
     </div>
-  )
+  );
 }
 
-export default SearchBar
+export default SearchBar;

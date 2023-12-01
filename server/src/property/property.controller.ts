@@ -40,12 +40,16 @@ export class PropertyController {
     maxPrice: number,
     @Query('featureType') featureType: string,
     @Query('propertyType') propertyType: string,
+    @Query('location') location: string,
+    @Query('search') search: string,
   ) {
     const filters = {
       minPrice,
       maxPrice,
       featureType,
       propertyType,
+      search,
+      location,
     };
 
     return this.propertyService.findAll(page, limit, filters);

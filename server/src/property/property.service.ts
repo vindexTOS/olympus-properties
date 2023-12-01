@@ -29,9 +29,29 @@ export class PropertyService {
         ...(filters.featureType !== undefined && {
           featureType: filters.featureType,
         }),
+        ...(filters.locatione !== undefined && {
+          location: filters.location,
+        }),
         ...(filters.propertyType !== undefined && {
           propertyType: filters.propertyType,
         }),
+        OR: [
+          {
+            propertyName: {
+              contains: filters.search || '',
+            },
+          },
+          {
+            description: {
+              contains: filters.search || '',
+            },
+          },
+          {
+            location: {
+              contains: filters.search || '',
+            },
+          },
+        ],
       };
 
       const properties = await this.prismaService.property.findMany({

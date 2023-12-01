@@ -25,13 +25,20 @@ function PropertysList() {
       maxPrice: 9000000,
       featureType: "",
       propertyType: "",
+      search: "",
     };
     dispatch(GetAllpropertysThunk(query));
     setCurrentPage(newPage);
   };
   if (loading) {
     return (
-      <div className="w-[100%] h-[100%] px-5 py-10 flex   flex-col items-center gap-8 justify-between bg-brand-white">
+      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-8 justify-between bg-brand-white">
+        <div className="items-center justify-center text-center">
+          <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
+          <p className="text-[1.2rem]">
+            Here You Can See Some Of Our Exclusive Listings We Cherish
+          </p>
+        </div>
         <div className="w-[100%] items-center justify-center    flex flex-wrap">
           {new Array(5).fill("").map((val: string, i: number) => (
             <LoadingSkeleton key={i} />
@@ -47,7 +54,13 @@ function PropertysList() {
 
   if (proepertyData.data && proepertyData.data.length > 0) {
     return (
-      <div className="w-[100%] h-[100%] px-5 py-10 flex   flex-col items-center gap-10 justify-between bg-brand-white">
+      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-between bg-brand-white">
+        <div className="items-center justify-center text-center">
+          <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
+          <p className="text-[1.2rem]">
+            Here You Can See Some Of Our Exclusive Listings We Cherish
+          </p>
+        </div>
         <div className="w-[100%] items-center justify-center  flex flex-wrap">
           {proepertyData.data.map((val: RecivedPropertyTypes) => {
             return <PropertyCard key={val.id} property={val} />;
@@ -62,7 +75,19 @@ function PropertysList() {
       </div>
     );
   } else {
-    <div>No Homes</div>;
+    return (
+      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-center bg-brand-white">
+        <div className="items-center justify-center text-center">
+          <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
+          <p className="text-[1.2rem]">
+            Here You Can See Some Of Our Exclusive Listings We Cherish
+          </p>
+        </div>
+        <div className="w-[100%] items-center justify-center  flex flex-wrap text-[5rem] text-red-500">
+          PROPERTY WAS NOT FOUND 404
+        </div>
+      </div>
+    );
   }
 }
 

@@ -53,9 +53,7 @@ export const UploadPhotos = createAsyncThunk(
           },
         }
       );
-      console.log(obj);
-      console.log(pictures);
-      console.log(res.data);
+
       return res.data;
     } catch (error) {
       const err: any = error;
@@ -70,15 +68,23 @@ export const GetAllpropertysThunk = createAsyncThunk(
   async (querys: any) => {
     // property?page=1&limit=1&minPrice=1000&maxPrice=2000&featureType=RENT&propertyType=HOUSE
     try {
-      const { page, limit, minPrice, maxPrice, featureType, propertyType } =
-        querys;
+      const {
+        page,
+        limit,
+        minPrice,
+        maxPrice,
+        featureType,
+        propertyType,
+        search,
+        location,
+      } = querys;
       const res = await axios.get(
         `${
           import.meta.env.VITE_BASE_API_URL
         }property?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}${
           featureType &&
           `&featureType=${featureType} propertyType ${propertyType`&propertyType=${propertyType}`}`
-        }`
+        }${search && `&search=${search}`}${location && `&location=${location}`}`
       );
       return res.data;
     } catch (error) {

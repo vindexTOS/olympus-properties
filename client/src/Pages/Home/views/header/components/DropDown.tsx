@@ -1,27 +1,48 @@
-import { useState } from 'react'
+import { useState } from "react";
+import useOutClick from "../../../../../hooks/useOutClick";
+import React, { FC } from "react";
 
-const CustomDropdown = ({ options }: { options: string[] }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
+type DropDownProps = {
+  options: any[];
+  setStateAction: (type: string, state: string) => void;
+  type: string;
+};
+
+const CustomDropdown: FC<DropDownProps> = ({
+  options,
+  setStateAction,
+  type,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(options[0].title);
 
   const handleOptionClick = (option: any) => {
-    setSelectedOption(option)
-    setIsOpen(false)
-  }
+    setStateAction(type, option);
+    let curVal: any = options.find((vl: any) => vl.key === option);
+
+    setSelectedOption(curVal?.title);
+    setIsOpen(false);
+  };
+  const handleDropDownCancle = () => {
+    setIsOpen(false);
+  };
+  const dropDownRef = React.useRef() as any;
+
+  useOutClick(dropDownRef, handleDropDownCancle);
 
   return (
-    <div className="relative  inline-block text-left  ">
+    <div ref={dropDownRef} className="relative  inline-block text-left  ">
       <div>
-        <div className="  shadow-sm w-[120px]   flex items-center justify-between">
+        <div className="  shadow-sm w-[170px]   flex items-center justify-between">
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex justify-center w-full  h-[48px] px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-brand-white border border-transparent rounded-[8px] active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-indigo hover:bg-gray-400"
+            className="inline-flex justify-center w-full text-[12px]  h-[48px]  py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-brand-white border border-transparent rounded-[8px] active:bg-gray-100 focus:outline-none focus:border-gray-200 focus:shadow-outline-indigo hover:bg-gray-400"
             id="options-menu"
             aria-haspopup="true"
             aria-expanded="true"
           >
-            {selectedOption || 'Select '}
+            {selectedOption || "Select "}
             <svg
               className="-mr-1 ml-2 h-5 w-5"
               fill="currentColor"
@@ -46,16 +67,16 @@ const CustomDropdown = ({ options }: { options: string[] }) => {
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {options.map((option: string, index: number) => (
+              {options.map((option: any, index: number) => (
                 <button
                   key={index}
-                  onClick={() => handleOptionClick(option)}
+                  onClick={() => handleOptionClick(option.key)}
                   className={` w-[100%] block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out ${
-                    selectedOption === option ? 'bg-gray-200' : ''
+                    selectedOption === option.key ? "bg-gray-200" : ""
                   }`}
                   role="menuitem"
                 >
-                  {option}
+                  {option.title}
                 </button>
               ))}
             </div>
@@ -63,7 +84,7 @@ const CustomDropdown = ({ options }: { options: string[] }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CustomDropdown
+export default CustomDropdown;
