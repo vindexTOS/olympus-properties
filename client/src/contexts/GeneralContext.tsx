@@ -35,7 +35,7 @@ export const GeneralContextProvider = ({
   useEffect(() => {
     let query = {
       page: 1,
-      limit: 8,
+      limit: 5,
       minPrice: 0,
       maxPrice: 9000000,
       featureType: "",

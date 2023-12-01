@@ -1,80 +1,117 @@
-import React, { useEffect, useState } from 'react'
-import FormInput from '../../../../../components/Inputs/FormInput'
-import FormDropDown from '../../../../../components/Inputs/FormDropDown'
-import ImageUploader from '../../../../../components/Inputs/ImageUpload'
-import Textarea from '../../../../../components/Inputs/Textarea'
-import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
-import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
-import { useDispatch } from 'react-redux'
-import { ThunkDispatch } from '@reduxjs/toolkit'
-import { getError,getPictures } from '../../../../../Redux/Property/property-slice'
-import { OwnerInformationBluePrint,  PropertyInformationBluePrint } from '../../../../../Types/dto-class'
+import React, { useEffect, useState } from "react";
+import FormInput from "../../../../../components/Inputs/FormInput";
+import FormDropDown from "../../../../../components/Inputs/FormDropDown";
+import ImageUploader from "../../../../../components/Inputs/ImageUpload";
+import Textarea from "../../../../../components/Inputs/Textarea";
+import { UseLanguageContext } from "../../../../../contexts/LanguageContext";
+import { CreatePropertyThunk } from "../../../../../Redux/Property/property-thunk";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import {
+  getError,
+  getPictures,
+} from "../../../../../Redux/Property/property-slice";
+import {
+  OwnerInformationBluePrint,
+  PropertyInformationBluePrint,
+} from "../../../../../Types/dto-class";
 
 export type SelectorType = {
   target: {
-    name: string
-    value: string
-  }
-}
+    name: string;
+    value: string;
+  };
+};
 
 function Form() {
-  const { translation, refrenceData } = UseLanguageContext()
-  const { form } = translation
-  const { userInfo, titles, propertyInfo } = form
+  const { translation, refrenceData } = UseLanguageContext();
+  const { form } = translation;
+  const { userInfo, titles, propertyInfo } = form;
   const style = {
     mainDiv: `bg-[#26a59a]/95 w-[60%]  h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
     userInfo: ` flex flex-col items-center gap-4`,
-    userInfoInputWrapper: 'flex  gap-1 justify-around w-[100%]',
+    userInfoInputWrapper: "flex  gap-1 justify-around w-[100%]",
     propertyInfo: `flex flex-col gap-5 `,
     propertyDropDowns: `flex gap-2 `,
-  }
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  };
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const [images, setImages] = useState<any>([])
- 
- 
+  const [images, setImages] = useState<any>([]);
+
   const [propertyForm, setpropertyForm] = useState({
-    email: '',
-    number: '',
-    firstName: '',
-    lastName: '',
-    location: 'Tbilisi',
-    feature: 'SALE',
-    propertyType: 'HOUSE',
+    email: "",
+    number: "",
+    firstName: "",
+    lastName: "",
+    location: "Tbilisi",
+    feature: "SALE",
+    propertyType: "HOUSE",
     price: 0,
     sqArea: 0,
     buildYear: 0,
-    title: '',
-    description: '',
-  })
+    title: "",
+    description: "",
+  });
   const handleChange = (
-    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
-    setpropertyForm((prevData) => ({ ...prevData, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setpropertyForm((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const HandleSubmit = () => {
     const emptyFields = Object.entries(propertyForm).filter(
-      ([key, value]) => !value,
-    )
+      ([key, value]) => !value
+    );
     if (emptyFields.length > 0) {
       dispatch(
         getError(
           `'Error: The following fields are required:',
-        ${emptyFields.map(([key]) => key).join(', ')},`,
-        ),
-      )
+        ${emptyFields.map(([key]) => key).join(", ")},`
+        )
+      );
       setTimeout(() => {
-        dispatch(getError(''))
-      }, 4000)
+        dispatch(getError(""));
+      }, 4000);
     } else {
-      const {email,number,firstName,lastName,location,feature,price,sqArea,buildYear ,propertyType,title,description} = propertyForm
-      let OwnerInformation = new OwnerInformationBluePrint(`${firstName} ${lastName}`, email, number)
-      let propertyInformation = new  PropertyInformationBluePrint(title,propertyType,feature,Number(price),Number(buildYear),location,Number(sqArea),description)
-      dispatch(CreatePropertyThunk({OwnerInformation,propertyInformation , pictures:images  }))
+      const {
+        email,
+        number,
+        firstName,
+        lastName,
+        location,
+        feature,
+        price,
+        sqArea,
+        buildYear,
+        propertyType,
+        title,
+        description,
+      } = propertyForm;
+      let OwnerInformation = new OwnerInformationBluePrint(
+        `${firstName} ${lastName}`,
+        email,
+        number
+      );
+      let propertyInformation = new PropertyInformationBluePrint(
+        title,
+        propertyType,
+        feature,
+        Number(price),
+        Number(buildYear),
+        location,
+        Number(sqArea),
+        description
+      );
+      dispatch(
+        CreatePropertyThunk({
+          OwnerInformation,
+          propertyInformation,
+          pictures: images,
+        })
+      );
     }
-  }
+  };
   return (
     <div className={style.mainDiv}>
       <div className={style.userInfo}>
@@ -165,7 +202,7 @@ function Form() {
             name="sqArea"
             title={propertyInfo.sqArea}
             placeholder="test"
-              inputType="number"
+            inputType="number"
           />
 
           <FormInput
@@ -173,7 +210,7 @@ function Form() {
             name="buildYear"
             title={propertyInfo.buildYear}
             placeholder="test"
-              inputType="number"
+            inputType="number"
           />
         </div>
       </div>
@@ -188,7 +225,7 @@ function Form() {
         {propertyInfo.submit}
       </button>
     </div>
-  )
+  );
 }
 
-export default Form
+export default Form;

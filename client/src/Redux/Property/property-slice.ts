@@ -50,11 +50,7 @@ const propertySlice = createSlice({
       })
       .addCase(CreatePropertyThunk.fulfilled, (state, action) => {
         state.loading = false;
-
-        console.log("REDUX ACTIOn");
         state.succsess = "Your property has been submited";
-        // console.log(state.pictures)
-        // action.payload.id
       })
       .addCase(CreatePropertyThunk.rejected, (state, action) => {
         state.loading = false;

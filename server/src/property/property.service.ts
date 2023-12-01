@@ -16,7 +16,8 @@ export class PropertyService {
   async findAll(page: number, limit: number, filters: any) {
     try {
       const skip = (page - 1) * limit;
-
+      const dataLength = await this.prismaService.property.count();
+      const totalPages = Math.ceil(dataLength / limit);
       const whereClause = {
         price: {
           gte: filters.minPrice !== undefined ? filters.minPrice : 0,
@@ -42,7 +43,7 @@ export class PropertyService {
         },
       });
 
-      return properties;
+      return { data: properties, totalPages, dataLength };
     } catch (error) {
       throw new HttpException(error, error.status);
     }

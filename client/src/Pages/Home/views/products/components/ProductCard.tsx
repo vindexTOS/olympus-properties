@@ -1,8 +1,9 @@
 import React from "react";
+import { RecivedPropertyTypes } from "../../../../../Types/propertyTypes";
 
-const PropertyCard = ({ property }: { property: any }) => {
+const PropertyCard = ({ property }: { property: RecivedPropertyTypes }) => {
   return (
-    <div className="bg-white shadow-md rounded-md overflow-hidden w-64 mx-4 my-4">
+    <div className="bg-white shadow-md rounded-md overflow-hidden h-[250px] w-[250px] mx-4 my-4">
       <img
         src="https://emacplan.co.za/wp-content/themes/homely/images/property-img-default.gif"
         alt="Property"
