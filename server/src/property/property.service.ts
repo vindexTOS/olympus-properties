@@ -47,21 +47,12 @@ export class PropertyService {
 
   async findOne(id: string) {
     try {
-      const dirName = __dirname;
-
       const property = await this.prismaService.property.findUnique({
         where: { id },
         include: {
           pictures: true,
         },
       });
-
-      // const PicturesObject = pictures.map( async (pictures) => {
-
-      //   const fileData = await fs.promises.readFile(imagePath);
-      //   console.log(fileData)
-      //   return fileData
-      // })
       return property;
     } catch (error) {
       throw new HttpException(error, error.status);

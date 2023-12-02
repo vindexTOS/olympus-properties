@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UpdatePictureDto } from './dto/update-picture.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { PropertyPicture } from '@prisma/client';
+;
 import * as fs from 'fs/promises'; 
 
 @Injectable()
@@ -43,23 +42,5 @@ export class PicturesService {
     }
   }
 
-  findAll() {
-    return `This action returns all pictures`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} picture`;
-  }
-
-  update(id: number, updatePictureDto: UpdatePictureDto) {
-    return `This action updates a #${id} picture`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} picture`;
-  }
-}
-function readFileToBuffer(path: string): any {
-  throw new Error('Function not implemented.');
 }
 

@@ -15,24 +15,5 @@ export class PicturesController {
     const propertyId = request.body.propertyId
     return this.picturesService.create(pictures,propertyId);
   }
-  // @Get()
-  // findAll() {
-  //   return this.picturesService.findAll();
-  // }
 
-  // @Get(':id')\
-
-  // findOne(@Param('id') id: string) {
-  //   return this.picturesService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePictureDto: UpdatePictureDto) {
-  //   return this.picturesService.update(+id, updatePictureDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.picturesService.remove(+id);
-  // }
 }
