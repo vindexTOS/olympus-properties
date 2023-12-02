@@ -56,24 +56,13 @@ export class PropertyService {
         },
       });
 
-      const pictures = property.pictures;
-      const pictureData = await Promise.all(
-        pictures.map(async (picture) => {
-          const imagePath = path.join(
-            dirName + `../../../productPictures/${picture.picturePath}`,
-          );
-          const fileData = await fs.promises.readFile(imagePath, 'utf-8');
-          return { path, data: fileData };
-        }),
-      );
-
       // const PicturesObject = pictures.map( async (pictures) => {
 
       //   const fileData = await fs.promises.readFile(imagePath);
       //   console.log(fileData)
       //   return fileData
       // })
-      return pictureData;
+      return property;
     } catch (error) {
       throw new HttpException(error, error.status);
     }
