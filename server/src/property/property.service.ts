@@ -9,66 +9,76 @@ import { UpdatePropertyDto } from './dto/update-property.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as path from 'path';
 import * as fs from 'fs';
+
+import { QueryDataDto } from './dto/queryData.dt';
 @Injectable()
 export class PropertyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(page: number, limit: number, filters: any) {
+  async findAll(query : QueryDataDto) {
     try {
-      const skip = (page - 1) * limit;
-      const dataLength = await this.prismaService.property.count();
-      const totalPages = Math.ceil(dataLength / limit);
-      const whereClause = {
-        price: {
-          gte: filters.minPrice !== undefined ? filters.minPrice : 0,
-          lte:
-            filters.maxPrice !== undefined
-              ? filters.maxPrice
-              : Number.MAX_SAFE_INTEGER,
-        },
-        ...(filters.featureType !== undefined && {
-          featureType: filters.featureType,
-        }),
-        ...(filters.locatione !== undefined && {
-          location: filters.location,
-        }),
-        ...(filters.propertyType !== undefined && {
-          propertyType: filters.propertyType,
-        }),
-        OR: [
-          {
-            propertyName: {
-              contains: filters.search || '',
-            },
-          },
-          {
-            description: {
-              contains: filters.search || '',
-            },
-          },
-          {
-            location: {
-              contains: filters.search || '',
-            },
-          },
-        ],
-      };
+      const { page = 1 , limit = 5, location, minPrice = 0, maxPrice = 999999999999999, featureType, propertyType} = query
 
-      const properties = await this.prismaService.property.findMany({
+      const skip = (+page -1) * +limit
+      const filteredProperties = await this.prismaService.property.findMany({
         skip,
-        take: limit,
-        where: whereClause,
-        orderBy: {
-          uploadetAt: 'desc',
-        },
-      });
+        take:+limit,
+        where:{
+          location: location,
+          featureType,
+          propertyType,
+          price : {
+            gte : +minPrice,
+            lte : +maxPrice
+          }
+        }
+        
+      })
+   const dataLength  = await this.prismaService.property.count()
 
-      return { data: properties, totalPages, dataLength };
+      const totalPages  = Math.ceil(filteredProperties.length / limit)
+
+      return {data:filteredProperties,totalPages, dataLength }
     } catch (error) {
+
       throw new HttpException(error, error.status);
     }
   }
 
+  async findOne(id: string) {
+    try {
+      const dirName = __dirname;
+
+      const property = await this.prismaService.property.findUnique({
+        where: { id },
+        include: {
+          pictures: true,
+        },
+      });
+
+      const pictures = property.pictures;
+      const pictureData = await Promise.all(
+        pictures.map(async (picture) => {
+          const imagePath = path.join(
+            dirName + `../../../productPictures/${picture.picturePath}`,
+          );
+          const fileData = await fs.promises.readFile(imagePath, 'utf-8');
+          return { path, data: fileData };
+        }),
+      );
+
+      // const PicturesObject = pictures.map( async (pictures) => {
+
+      //   const fileData = await fs.promises.readFile(imagePath);
+      //   console.log(fileData)
+      //   return fileData
+      // })
+      return pictureData;
+    } catch (error) {
+      throw new HttpException(error, error.status);
+    }
+  }
+  
   async create(createPropertyDto: CreatePropertyDto) {
     try {
       const propertyOwner = await this.prismaService.propertyOwner.findUnique({
@@ -112,39 +122,6 @@ export class PropertyService {
     }
   }
 
-  async findOne(id: string) {
-    try {
-      const dirName = __dirname;
-
-      const property = await this.prismaService.property.findUnique({
-        where: { id },
-        include: {
-          pictures: true,
-        },
-      });
-
-      const pictures = property.pictures;
-      const pictureData = await Promise.all(
-        pictures.map(async (picture) => {
-          const imagePath = path.join(
-            dirName + `../../../productPictures/${picture.picturePath}`,
-          );
-          const fileData = await fs.promises.readFile(imagePath, 'utf-8');
-          return { path, data: fileData };
-        }),
-      );
-
-      // const PicturesObject = pictures.map( async (pictures) => {
-
-      //   const fileData = await fs.promises.readFile(imagePath);
-      //   console.log(fileData)
-      //   return fileData
-      // })
-      return pictureData;
-    } catch (error) {
-      throw new HttpException(error, error.status);
-    }
-  }
 
   async update(id: string, updatePropertyDto: UpdatePropertyDto) {
     try {

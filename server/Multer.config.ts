@@ -18,7 +18,6 @@ const imageFileFilter = (req, file, callback) => {
 
 export const multerOptions = {
   storage: diskStorage({
-    destination: imagePath, // Define your upload directory
     filename: (req, file, callback) => {
       const fileExtName = extname(file.originalname);
       callback(null, `${Date.now()}${fileExtName}`);

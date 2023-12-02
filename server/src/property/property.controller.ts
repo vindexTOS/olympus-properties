@@ -15,6 +15,7 @@ import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { JwtAuthGuard } from 'src/guard/jwtAuthGuard';
+import { QueryDataDto } from './dto/queryData.dt';
 
 @Controller('property')
 export class PropertyController {
@@ -28,31 +29,8 @@ export class PropertyController {
   }
 
   @Get()
-  findAll(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-    @Query('minPrice', new DefaultValuePipe(0), ParseIntPipe) minPrice: number,
-    @Query(
-      'maxPrice',
-      new DefaultValuePipe(Number.MAX_SAFE_INTEGER),
-      ParseIntPipe,
-    )
-    maxPrice: number,
-    @Query('featureType') featureType: string,
-    @Query('propertyType') propertyType: string,
-    @Query('location') location: string,
-    @Query('search') search: string,
-  ) {
-    const filters = {
-      minPrice,
-      maxPrice,
-      featureType,
-      propertyType,
-      search,
-      location,
-    };
-
-    return this.propertyService.findAll(page, limit, filters);
+  findAll(@Query()  query : QueryDataDto) {
+    return this.propertyService.findAll(query);
   }
 
   @Get(':id')

@@ -12,10 +12,7 @@ export class PicturesController {
   @Post()
   @UseInterceptors(FilesInterceptor('pictures', 10))
   create(@UploadedFiles() pictures: Express.Multer.File[], @Req() request: Request) {
-     
-
     const propertyId = request.body.propertyId
-    console.log(pictures)
     return this.picturesService.create(pictures,propertyId);
   }
   // @Get()

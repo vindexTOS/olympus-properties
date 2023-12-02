@@ -61,6 +61,7 @@ model Property {
   featureType  FeatureType
   price        Int
   buildYear    Int
+  mainPicture  String?
   pictures     PropertyPicture[]
   location     String
   sqArea       Int
@@ -70,7 +71,7 @@ model Property {
 
 model PropertyPicture {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  picturePath String   @unique
+  picturePath String   
   propertyId  String   @db.ObjectId
   property    Property @relation(fields: [propertyId], references: [id])
 }
