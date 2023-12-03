@@ -24,7 +24,13 @@ const ImageUploader: FC<ImagePropType> = ({ setImages, images }) => {
     setImages(updatedImages)
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
+    },
+  })
 
   return (
     <div className={`${images.length > 0 ? 'flex' : ''}`}>

@@ -1,21 +1,25 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import PropertyCard from "./components/ProductCard";
-import { RecivedPropertyTypes } from "../../../../Types/propertyTypes";
-import Pagination from "./components/Pagination";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { GetAllpropertysThunk } from "../../../../Redux/Property/property-thunk";
-import LoadingSkeleton from "./components/LoadingSkeleton";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import PropertyCard from './components/ProductCard'
+import { RecivedPropertyTypes } from '../../../../Types/propertyTypes'
+import Pagination from './components/Pagination'
+import { ThunkDispatch } from '@reduxjs/toolkit'
+import {
+  GetAllpropertysThunk,
+  GetSinglePropert,
+} from '../../../../Redux/Property/property-thunk'
+import LoadingSkeleton from './components/LoadingSkeleton'
+
 function PropertysList() {
   //  RecivedPropertyTypes[]
-  const proepertyData = useSelector((state: any) => state.propertyReducer.data);
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const { loading } = useSelector((state: any) => state.propertyReducer);
-  const [currentPage, setCurrentPage] = useState(1);
+  const proepertyData = useSelector((state: any) => state.propertyReducer.data)
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  const { loading } = useSelector((state: any) => state.propertyReducer)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const handlePageChange = (newPage: number) => {
     if (newPage > proepertyData.totalPages || newPage < 1) {
-      newPage = 1;
+      newPage = 1
     }
 
     let query = {
@@ -23,13 +27,14 @@ function PropertysList() {
       limit: 5,
       minPrice: 0,
       maxPrice: 9000000,
-      featureType: "",
-      propertyType: "",
-      search: "",
-    };
-    dispatch(GetAllpropertysThunk(query));
-    setCurrentPage(newPage);
-  };
+      featureType: '',
+      propertyType: '',
+      search: '',
+    }
+    dispatch(GetAllpropertysThunk(query))
+    setCurrentPage(newPage)
+  }
+
   if (loading) {
     return (
       <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-8 justify-between bg-brand-white">
@@ -40,7 +45,7 @@ function PropertysList() {
           </p>
         </div>
         <div className="w-[100%] items-center justify-center    flex flex-wrap">
-          {new Array(5).fill("").map((val: string, i: number) => (
+          {new Array(5).fill('').map((val: string, i: number) => (
             <LoadingSkeleton key={i} />
           ))}
         </div>
@@ -49,10 +54,10 @@ function PropertysList() {
           <span className=" bg-gray-300  rounded-md w-[70px] h-[40px]  animate-pulse "></span>
         </div>
       </div>
-    );
+    )
   }
 
-  if (proepertyData.data && proepertyData.data.length > 0) {
+  if (proepertyData && proepertyData.data && proepertyData.data.length > 0) {
     return (
       <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-between bg-brand-white">
         <div className="items-center justify-center text-center">
@@ -63,7 +68,7 @@ function PropertysList() {
         </div>
         <div className="w-[100%] items-center justify-center  flex flex-wrap">
           {proepertyData.data.map((val: RecivedPropertyTypes) => {
-            return <PropertyCard key={val.id} property={val} />;
+            return <PropertyCard key={val.id} property={val} />
           })}
         </div>
         <Pagination
@@ -73,7 +78,7 @@ function PropertysList() {
           onPageChange={handlePageChange}
         />
       </div>
-    );
+    )
   } else {
     return (
       <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-center bg-brand-white">
@@ -87,8 +92,8 @@ function PropertysList() {
           PROPERTY WAS NOT FOUND 404
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default PropertysList;
+export default PropertysList

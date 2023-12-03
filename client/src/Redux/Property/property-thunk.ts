@@ -1,72 +1,78 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import axios from "axios";
+import axios from 'axios'
 import {
   PhotoPayLoadForRedux,
   TPropertyTypes,
   TpropertyAndOwner,
-} from "../../Types/propertyTypes";
+} from '../../Types/propertyTypes'
 
 export const CreatePropertyThunk = createAsyncThunk(
-  "creatProperty/post",
+  'creatProperty/post',
   async (obj: TpropertyAndOwner, { dispatch }) => {
-    let { OwnerInformation, propertyInformation } = obj;
+    let { OwnerInformation, propertyInformation } = obj
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}property`,
-        { OwnerInformation, propertyInformation }
-      );
+        { OwnerInformation, propertyInformation },
+      )
+      let propertyId = ''
 
-      let propertyId = res.data.id;
       // console.log(res.data  )
       // console.log(res  )
-      await dispatch(UploadPhotos({ pictures: obj.pictures, propertyId }));
+      if (res.data.property) {
+        propertyId = res.data.property[0].id
+      } else {
+        propertyId = res.data.id
+      }
+      await dispatch(UploadPhotos({ pictures: obj.pictures, propertyId }))
 
-      return res.data;
+      console.log(propertyId, res.data)
+
+      return res.data
     } catch (error) {
-      const err: any = error;
-      console.log(error);
-      throw new Error(err.response.data.message);
+      const err: any = error
+      console.log(error)
+      throw new Error(err.response.data.message)
     }
-  }
-);
+  },
+)
 
 export const UploadPhotos = createAsyncThunk(
-  "uploadphotos/post",
+  'uploadphotos/post',
   async (obj: PhotoPayLoadForRedux) => {
     try {
-      const { pictures, propertyId } = obj;
-      console.log(obj);
-      const formData = new FormData();
+      const { pictures, propertyId } = obj
+      console.log(obj)
+      const formData = new FormData()
       pictures.forEach((file, index) => {
-        formData.append(`pictures`, file);
-      });
+        formData.append(`pictures`, file)
+      })
 
-      formData.append("propertyId", propertyId);
+      formData.append('propertyId', propertyId)
 
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}pictures`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
-        }
-      );
+        },
+      )
 
-      return res.data;
+      return res.data
     } catch (error) {
-      const err: any = error;
-      console.error(error);
-      throw new Error(err.response.data.message);
+      const err: any = error
+      console.error(error)
+      throw new Error(err.response.data.message)
     }
-  }
-);
+  },
+)
 
 export const GetAllpropertysThunk = createAsyncThunk(
-  "allpropertys/get",
+  'allpropertys/get',
   async (querys: any) => {
-    // property?page=1&limit=1&minPrice=1000&maxPrice=2000&featureType=RENT&propertyType=HOUSE
     try {
       const {
         page,
@@ -77,24 +83,55 @@ export const GetAllpropertysThunk = createAsyncThunk(
         propertyType,
         search,
         location,
-      } = querys;
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_BASE_API_URL
-        }property?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}${
-          featureType &&
-          `&featureType=${featureType} propertyType ${propertyType`&propertyType=${propertyType}`}`
-        }${search && `&search=${search}`}${location && `&location=${location}`}`
-      );
-      return res.data;
+      } = querys
+      let url = `${
+        import.meta.env.VITE_BASE_API_URL
+      }property?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+
+      // Add propertyType if it exists
+      if (propertyType) {
+        url += `&propertyType=${propertyType}`
+      }
+
+      // Add featureType if it exists
+      if (featureType) {
+        url += `&featureType=${featureType}`
+      }
+
+      // Add location if it exists
+      if (location) {
+        url += `&location=${location}`
+      }
+
+      // Add search if it exists
+      if (search) {
+        url += `&search=${search}`
+      }
+      console.log(url)
+      const res = await axios.get(url)
+      return res.data
     } catch (error) {
-      throw new Error("ERROR");
+      throw new Error('ERROR')
     }
-  }
-);
+  },
+)
+
+export const GetSinglePropert = createAsyncThunk(
+  'single/get',
+  async (id: string) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_API_URL}property/${id}`,
+      )
+      return res.data
+    } catch (error) {
+      throw new Error('ERROR')
+    }
+  },
+)
 
 export const Updateproperty = createAsyncThunk(
-  "property/update",
+  'property/update',
   async (obj: TPropertyTypes) => {
     // try {
     //   const res = await axios.patch(
@@ -105,5 +142,5 @@ export const Updateproperty = createAsyncThunk(
     // } catch (error) {
     //   throw new Error('ERROR')
     // }
-  }
-);
+  },
+)

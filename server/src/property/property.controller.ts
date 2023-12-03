@@ -29,7 +29,7 @@ export class PropertyController {
   }
 
   @Get()
-  findAll(@Query()  query : QueryDataDto) {
+  findAll(@Query() query: QueryDataDto) {
     return this.propertyService.findAll(query);
   }
 

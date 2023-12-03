@@ -15,32 +15,46 @@ import { QueryDataDto } from './dto/queryData.dt';
 export class PropertyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(query : QueryDataDto) {
+  async findAll(query: QueryDataDto) {
     try {
-      const { page = 1 , limit = 5, location, minPrice = 0, maxPrice = 999999999999999, featureType, propertyType} = query
+      const {
+        page = 1,
+        limit = 5,
+        location,
+        minPrice = 0,
+        maxPrice = 999999999999999,
+        featureType,
+        propertyType,
+        search,
+      } = query;
 
-      const skip = (+page -1) * +limit
+      const skip = (+page - 1) * +limit;
+      console.log(search);
+      const whereClause: any = {
+        location,
+        featureType,
+        propertyType,
+        price: {
+          gte: +minPrice,
+          lte: +maxPrice,
+        },
+        propertyName: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      };
+
       const filteredProperties = await this.prismaService.property.findMany({
         skip,
-        take:+limit,
-        where:{
-          location: location,
-          featureType,
-          propertyType,
-          price : {
-            gte : +minPrice,
-            lte : +maxPrice
-          }
-        }
-        
-      })
-   const dataLength  = await this.prismaService.property.count()
+        take: +limit,
+        where: whereClause,
+      });
+      const dataLength = await this.prismaService.property.count();
 
-      const totalPages  = Math.ceil(filteredProperties.length / limit)
+      const totalPages = Math.ceil(filteredProperties.length / limit);
 
-      return {data:filteredProperties,totalPages, dataLength }
+      return { data: filteredProperties, totalPages, dataLength };
     } catch (error) {
-
       throw new HttpException(error, error.status);
     }
   }
@@ -58,7 +72,7 @@ export class PropertyService {
       throw new HttpException(error, error.status);
     }
   }
-  
+
   async create(createPropertyDto: CreatePropertyDto) {
     try {
       const propertyOwner = await this.prismaService.propertyOwner.findUnique({
@@ -68,8 +82,8 @@ export class PropertyService {
       });
 
       if (!propertyOwner) {
-        const CreateOwnerWithProperty =
-          await this.prismaService.propertyOwner.create({
+        const CreateOwnerWithProperty = await this.prismaService.propertyOwner.create(
+          {
             data: {
               ...createPropertyDto.OwnerInformation,
               property: {
@@ -79,7 +93,8 @@ export class PropertyService {
             include: {
               property: true,
             },
-          });
+          },
+        );
         return CreateOwnerWithProperty;
       }
       const property = await this.prismaService.property.create({
@@ -101,7 +116,6 @@ export class PropertyService {
       throw new HttpException(error.message, error.status);
     }
   }
-
 
   async update(id: string, updatePropertyDto: UpdatePropertyDto) {
     try {
