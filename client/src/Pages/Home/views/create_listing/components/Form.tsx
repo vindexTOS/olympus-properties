@@ -5,7 +5,7 @@ import ImageUploader from '../../../../../components/Inputs/ImageUpload'
 import Textarea from '../../../../../components/Inputs/Textarea'
 import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
 import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThunkDispatch } from '@reduxjs/toolkit'
 import {
   getError,
@@ -15,6 +15,8 @@ import {
   OwnerInformationBluePrint,
   PropertyInformationBluePrint,
 } from '../../../../../Types/dto-class'
+import LoadingComponent from '../../../../../components/Status-components/Loading'
+import { UseGeneralContext } from '../../../../../contexts/GeneralContext'
 
 export type SelectorType = {
   target: {
@@ -28,7 +30,7 @@ function Form() {
   const { form } = translation
   const { userInfo, titles, propertyInfo } = form
   const style = {
-    mainDiv: `bg-[#26a59a]/95 w-[60%] max_xl:w-[90%] max_lg:h-[2000px] max_lg:mt-40 max_lg:w-[100%]   max_xl:h-[100%]  max_lg:items-center max_lg:justify-center h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
+    mainDiv: `bg-[#26a59a]/95 relative w-[60%] max_xl:w-[90%] max_lg:h-[2000px] max_lg:mt-40 max_lg:w-[100%]   max_xl:h-[100%]  max_lg:items-center max_lg:justify-center h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
     userInfo: ` flex flex-col items-center gap-4`,
     userInfoInputWrapper: 'flex max_lg:flex-col gap-1 justify-around w-[100%]',
     propertyInfo: `flex flex-col   gap-5 `,
@@ -37,7 +39,7 @@ function Form() {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
 
   const [images, setImages] = useState<any>([])
-
+  const { loading } = useSelector((state: any) => state.propertyReducer)
   const [propertyForm, setpropertyForm] = useState({
     email: '',
     number: '',
@@ -58,8 +60,9 @@ function Form() {
     const { name, value } = e.target
     setpropertyForm((prevData) => ({ ...prevData, [name]: value }))
   }
+  const { createRef } = UseGeneralContext()
 
-  const HandleSubmit = () => {
+  const HandleSubmit = async () => {
     const emptyFields = Object.entries(propertyForm).filter(
       ([key, value]) => !value,
     )
@@ -103,13 +106,20 @@ function Form() {
         Number(sqArea),
         description,
       )
-      dispatch(
+      await dispatch(
         CreatePropertyThunk({
           OwnerInformation,
           propertyInformation,
           pictures: images,
         }),
       )
+      window.location.reload()
+      if (createRef && createRef.current) {
+        createRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
     }
   }
   return (
@@ -140,7 +150,7 @@ function Form() {
               inputType="text"
             />
           </div>
-          <div className="w-[90%]">
+          <div ref={createRef} className="w-[90%]">
             <FormInput
               handleChange={handleChange}
               name="firstName"
@@ -221,8 +231,10 @@ function Form() {
       </div>
       <h1 className="w-[100%] text-center text-[1.6rem] font-bold text-brand-white font-geo">
         {titles.formHeader3}
+        <LoadingComponent loading={loading} />
       </h1>
       <ImageUploader images={images} setImages={setImages} />
+
       <button
         onClick={HandleSubmit}
         className="bg-brand-yellow hover:bg-brand-yellow/95 text-brand-white font-bold py-2 px-4 rounded"

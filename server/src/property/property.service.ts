@@ -51,7 +51,7 @@ export class PropertyService {
       });
       const dataLength = await this.prismaService.property.count();
 
-      const totalPages = Math.ceil(filteredProperties.length / limit);
+      const totalPages = Math.ceil(dataLength / Number(limit));
 
       return { data: filteredProperties, totalPages, dataLength };
     } catch (error) {

@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FC } from 'react'
 
 type PagionationProps = {
-  currentPage: number;
-  totalPages: number;
-  dataLength: number;
-  onPageChange: (page: number) => void;
-};
+  currentPage: number
+  totalPages: number
+  dataLength: number
+  onPageChange: (page: number) => void
+}
 const Pagination: FC<PagionationProps> = ({
   currentPage,
   totalPages,
@@ -39,7 +39,7 @@ const Pagination: FC<PagionationProps> = ({
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

@@ -26,7 +26,7 @@ function PropertysList() {
 
     let query = {
       page: newPage,
-      limit: 5,
+      limit: 4,
       minPrice: 0,
       maxPrice: 9000000,
       featureType: '',
@@ -34,7 +34,7 @@ function PropertysList() {
       search: '',
     }
     dispatch(GetAllpropertysThunk(query))
-    setCurrentPage(newPage)
+    setCurrentPage((curr) => (curr = newPage))
   }
 
   if (loading) {
