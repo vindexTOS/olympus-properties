@@ -63,6 +63,11 @@ export const LanguageContextProvider = ({
         submit: lang ? 'გამოგზავნა' : 'Submit',
       },
     },
+    nav: {
+      home: lang ? 'მთავარი' : 'Home',
+      listing: lang ? 'შემოთავაზებები' : 'Listing',
+      createNew: lang ? 'განცხადების დამატება' : 'Add Propertie',
+    },
   }
   let refrenceData = {
     featureType: {

@@ -1,40 +1,42 @@
-import { useState } from "react";
-import useOutClick from "../../../../../hooks/useOutClick";
-import React, { FC } from "react";
-import { useDispatch } from "react-redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
+import { useState } from 'react'
+import useOutClick from '../../../../../hooks/useOutClick'
+import React, { FC } from 'react'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 
 type DropDownProps = {
-  options: any[];
-  setStateAction: (type: string, state: string) => void;
-  type: string;
-};
+  options: any[]
+  setStateAction: (type: string, state: string) => void
+  type: string
+  initTitle: string
+}
 
 const CustomDropdown: FC<DropDownProps> = ({
   options,
   setStateAction,
   type,
+  initTitle,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0].title);
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedOption, setSelectedOption] = useState()
 
   const handleOptionClick = (option: any) => {
-    setStateAction(type, option);
-    let curVal: any = options.find((vl: any) => vl.key === option);
-    setSelectedOption(curVal?.title);
-    setIsOpen(false);
-  };
+    setStateAction(type, option)
+    let curVal: any = options.find((vl: any) => vl.key === option)
+    setSelectedOption(curVal?.title)
+    setIsOpen(false)
+  }
   const handleDropDownCancle = () => {
-    setIsOpen(false);
-  };
-  const dropDownRef = React.useRef() as any;
+    setIsOpen(false)
+  }
+  const dropDownRef = React.useRef() as any
 
-  useOutClick(dropDownRef, handleDropDownCancle);
+  useOutClick(dropDownRef, handleDropDownCancle)
 
   return (
     <div ref={dropDownRef} className="relative  inline-block text-left  ">
       <div>
-        <div className="  shadow-sm w-[170px]   flex items-center justify-between">
+        <div className="  shadow-sm w-[170px]     flex items-center justify-between">
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
@@ -43,7 +45,7 @@ const CustomDropdown: FC<DropDownProps> = ({
             aria-haspopup="true"
             aria-expanded="true"
           >
-            {selectedOption || "Select "}
+            {selectedOption ? selectedOption : initTitle}
             <svg
               className="-mr-1 ml-2 h-5 w-5"
               fill="currentColor"
@@ -73,7 +75,7 @@ const CustomDropdown: FC<DropDownProps> = ({
                   key={index}
                   onClick={() => handleOptionClick(option.key)}
                   className={` w-[100%] block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out ${
-                    selectedOption === option.key ? "bg-gray-200" : ""
+                    selectedOption === option.key ? 'bg-gray-200' : ''
                   }`}
                   role="menuitem"
                 >
@@ -85,7 +87,7 @@ const CustomDropdown: FC<DropDownProps> = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CustomDropdown;
+export default CustomDropdown

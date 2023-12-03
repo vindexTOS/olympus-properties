@@ -1,78 +1,78 @@
-import React, { useEffect, useState } from "react";
-import FormInput from "../../../../../components/Inputs/FormInput";
-import FormDropDown from "../../../../../components/Inputs/FormDropDown";
-import ImageUploader from "../../../../../components/Inputs/ImageUpload";
-import Textarea from "../../../../../components/Inputs/Textarea";
-import { UseLanguageContext } from "../../../../../contexts/LanguageContext";
-import { CreatePropertyThunk } from "../../../../../Redux/Property/property-thunk";
-import { useDispatch } from "react-redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
+import React, { useEffect, useState } from 'react'
+import FormInput from '../../../../../components/Inputs/FormInput'
+import FormDropDown from '../../../../../components/Inputs/FormDropDown'
+import ImageUploader from '../../../../../components/Inputs/ImageUpload'
+import Textarea from '../../../../../components/Inputs/Textarea'
+import { UseLanguageContext } from '../../../../../contexts/LanguageContext'
+import { CreatePropertyThunk } from '../../../../../Redux/Property/property-thunk'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 import {
   getError,
   getPictures,
-} from "../../../../../Redux/Property/property-slice";
+} from '../../../../../Redux/Property/property-slice'
 import {
   OwnerInformationBluePrint,
   PropertyInformationBluePrint,
-} from "../../../../../Types/dto-class";
+} from '../../../../../Types/dto-class'
 
 export type SelectorType = {
   target: {
-    name: string;
-    value: string;
-  };
-};
+    name: string
+    value: string
+  }
+}
 
 function Form() {
-  const { translation, refrenceData } = UseLanguageContext();
-  const { form } = translation;
-  const { userInfo, titles, propertyInfo } = form;
+  const { translation, refrenceData } = UseLanguageContext()
+  const { form } = translation
+  const { userInfo, titles, propertyInfo } = form
   const style = {
-    mainDiv: `bg-[#26a59a]/95 w-[60%]  h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
+    mainDiv: `bg-[#26a59a]/95 w-[60%] max_xl:w-[90%] max_lg:h-[2000px] max_lg:mt-40 max_lg:w-[100%]   max_xl:h-[100%]  max_lg:items-center max_lg:justify-center h-[930px]  rounded-r-[9px] flex-col flex p-5 gap-5`,
     userInfo: ` flex flex-col items-center gap-4`,
-    userInfoInputWrapper: "flex  gap-1 justify-around w-[100%]",
-    propertyInfo: `flex flex-col gap-5 `,
-    propertyDropDowns: `flex gap-2 `,
-  };
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    userInfoInputWrapper: 'flex max_lg:flex-col gap-1 justify-around w-[100%]',
+    propertyInfo: `flex flex-col   gap-5 `,
+    propertyDropDowns: `flex gap-2 max_lg:flex-col  `,
+  }
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
 
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<any>([])
 
   const [propertyForm, setpropertyForm] = useState({
-    email: "",
-    number: "",
-    firstName: "",
-    lastName: "",
-    location: "Tbilisi",
-    feature: "SALE",
-    propertyType: "HOUSE",
+    email: '',
+    number: '',
+    firstName: '',
+    lastName: '',
+    location: 'Tbilisi',
+    feature: 'SALE',
+    propertyType: 'HOUSE',
     price: 0,
     sqArea: 0,
     buildYear: 0,
-    title: "",
-    description: "",
-  });
+    title: '',
+    description: '',
+  })
   const handleChange = (
-    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: SelectorType | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-    setpropertyForm((prevData) => ({ ...prevData, [name]: value }));
-  };
+    const { name, value } = e.target
+    setpropertyForm((prevData) => ({ ...prevData, [name]: value }))
+  }
 
   const HandleSubmit = () => {
     const emptyFields = Object.entries(propertyForm).filter(
-      ([key, value]) => !value
-    );
+      ([key, value]) => !value,
+    )
     if (emptyFields.length > 0) {
       dispatch(
         getError(
           `'Error: The following fields are required:',
-        ${emptyFields.map(([key]) => key).join(", ")},`
-        )
-      );
+        ${emptyFields.map(([key]) => key).join(', ')},`,
+        ),
+      )
       setTimeout(() => {
-        dispatch(getError(""));
-      }, 4000);
+        dispatch(getError(''))
+      }, 4000)
     } else {
       const {
         email,
@@ -87,12 +87,12 @@ function Form() {
         propertyType,
         title,
         description,
-      } = propertyForm;
+      } = propertyForm
       let OwnerInformation = new OwnerInformationBluePrint(
         `${firstName} ${lastName}`,
         email,
-        number
-      );
+        number,
+      )
       let propertyInformation = new PropertyInformationBluePrint(
         title,
         propertyType,
@@ -101,25 +101,30 @@ function Form() {
         Number(buildYear),
         location,
         Number(sqArea),
-        description
-      );
+        description,
+      )
       dispatch(
         CreatePropertyThunk({
           OwnerInformation,
           propertyInformation,
           pictures: images,
-        })
-      );
+        }),
+      )
     }
-  };
+  }
   return (
     <div className={style.mainDiv}>
+      <div className="flex items-center justify-center">
+        <h1 className=" xl:hidden  text-[2rem] text-brand-white font-geo text-center">
+          დაამატეთ საკუთარი განცხადება
+        </h1>
+      </div>
       <div className={style.userInfo}>
         <h1 className="text-[1.6rem] font-bold text-brand-white font-geo ">
           {titles.formHeader1}
         </h1>
         <div className={style.userInfoInputWrapper}>
-          <div className="w-[90%]">
+          <div className="w-[90%]  ">
             <FormInput
               handleChange={handleChange}
               title={userInfo.email}
@@ -225,7 +230,7 @@ function Form() {
         {propertyInfo.submit}
       </button>
     </div>
-  );
+  )
 }
 
-export default Form;
+export default Form

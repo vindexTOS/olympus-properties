@@ -9,8 +9,10 @@ import {
   GetSinglePropert,
 } from '../../../../Redux/Property/property-thunk'
 import LoadingSkeleton from './components/LoadingSkeleton'
+import { UseGeneralContext } from '../../../../contexts/GeneralContext'
 
 function PropertysList() {
+  const { listingRef } = UseGeneralContext()
   //  RecivedPropertyTypes[]
   const proepertyData = useSelector((state: any) => state.propertyReducer.data)
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
@@ -37,7 +39,10 @@ function PropertysList() {
 
   if (loading) {
     return (
-      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-8 justify-between bg-brand-white">
+      <div
+        ref={listingRef}
+        className="w-[100%] h-[100%] px-5 py-10 flex   flex-col items-center gap-8 justify-between bg-brand-white"
+      >
         <div className="items-center justify-center text-center">
           <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
           <p className="text-[1.2rem]">
@@ -45,7 +50,7 @@ function PropertysList() {
           </p>
         </div>
         <div className="w-[100%] items-center justify-center    flex flex-wrap">
-          {new Array(5).fill('').map((val: string, i: number) => (
+          {new Array(4).fill('').map((val: string, i: number) => (
             <LoadingSkeleton key={i} />
           ))}
         </div>
@@ -59,8 +64,11 @@ function PropertysList() {
 
   if (proepertyData && proepertyData.data && proepertyData.data.length > 0) {
     return (
-      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-between bg-brand-white">
-        <div className="items-center justify-center text-center">
+      <div
+        ref={listingRef}
+        className="w-[100%] h-[100%]  px-5 py-10 flex  bg-brand-white/40 backdrop-blur-xl flex-col items-center gap-10 justify-between    "
+      >
+        <div className="items-center justify-center text-center z-10">
           <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
           <p className="text-[1.2rem]">
             Here You Can See Some Of Our Exclusive Listings We Cherish
@@ -81,7 +89,10 @@ function PropertysList() {
     )
   } else {
     return (
-      <div className="w-[100%] h-[700px] px-5 py-10 flex   flex-col items-center gap-10 justify-center bg-brand-white">
+      <div
+        ref={listingRef}
+        className="w-[100%] h-[100%]  px-5 py-10 flex   flex-col items-center gap-10 justify-center bg-brand-white/80 backdrop-blur-xl	"
+      >
         <div className="items-center justify-center text-center">
           <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
           <p className="text-[1.2rem]">
