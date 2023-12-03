@@ -62,7 +62,7 @@ const CustomDropdown: FC<DropDownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
+        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg z-50 max-h-[200px] overflow-y-scroll">
           <div className="rounded-md bg-brand-white shadow-xs">
             <div
               className="py-1"

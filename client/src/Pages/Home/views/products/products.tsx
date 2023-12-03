@@ -34,7 +34,7 @@ function PropertysList() {
       search: '',
     }
     dispatch(GetAllpropertysThunk(query))
-    setCurrentPage((curr) => (curr = newPage))
+    setCurrentPage(newPage)
   }
 
   if (loading) {
@@ -66,9 +66,9 @@ function PropertysList() {
     return (
       <div
         ref={listingRef}
-        className="w-[100%] h-[100%]  px-5 py-10 flex  bg-brand-white/40 backdrop-blur-xl flex-col items-center gap-10 justify-between    "
+        className="w-[100%] h-[100%]  px-5 py-10 flex  bg-brand-white/90 flex-col items-center gap-10 justify-between    "
       >
-        <div className="items-center justify-center text-center z-10">
+        <div className="items-center justify-center text-center  ">
           <h1 className="text-[2rem]">Discover Our Exclusive Listings</h1>
           <p className="text-[1.2rem]">
             Here You Can See Some Of Our Exclusive Listings We Cherish

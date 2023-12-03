@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
-import Login from './Pages/Auth/Login'
+import Login from './Pages/Admin/Login'
 import Home from './Pages/Home/Home'
 import SingePage from './Pages/SinglePage/SingePage'
 function App() {
@@ -11,7 +11,7 @@ function App() {
       outlet: [],
     },
     { path: '/property/:id', element: <SingePage /> },
-    { path: '/login', element: <Login /> },
+    { path: '/admin', element: <Login /> },
   ]
 
   type ReactRouteType = {

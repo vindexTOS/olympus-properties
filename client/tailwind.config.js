@@ -53,6 +53,16 @@ export default {
       'green-700': '#2f855a',
       'green-800': '#276749',
       'green-900': '#22543d',
+      // BLUE
+      'blue-100': '#ebf8ff',
+      'blue-200': '#bee3f8',
+      'blue-300': '#90cdf4',
+      'blue-400': '#63b3ed',
+      'blue-500': '#4299e1',
+      'blue-600': '#3182ce',
+      'blue-700': '#2b6cb0',
+      'blue-800': '#2c5282',
+      'blue-900': '#2a4365',
     },
     screens: {
       xm: '500px',
