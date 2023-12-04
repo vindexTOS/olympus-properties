@@ -1,8 +1,5 @@
 import { FeatureType, PropertyType } from '@prisma/client';
 import {
-  IsInt,
-  IsPositive,
-  IsNumber,
   IsEnum,
   IsOptional,
 } from 'class-validator';

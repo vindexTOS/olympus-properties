@@ -5,7 +5,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import * as jwt from "jsonwebtoken"; // Import jsonwebtoken
 @Injectable()
 
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,11 +20,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return payload
   }
 
-  async generateToken(user): Promise<string> {
+  async generateToken(user) {
     const payload = {
         ...user
     };
-    return jwt.sign(payload, process.env.JWT_SECRET, {
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: process.env.JWT_EXPIRES_TIME, // Adjust token expiration as needed
     });
   }

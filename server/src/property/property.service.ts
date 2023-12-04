@@ -2,15 +2,12 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  UseGuards,
 } from '@nestjs/common';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
+import { CreatePropertyDto, OwnerInformation, PropertyInformation } from './dto/create-property.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as path from 'path';
-import * as fs from 'fs';
-
 import { QueryDataDto } from './dto/queryData.dt';
+import { UpdatePropertyDto } from './dto/update-property.dto';
+
 @Injectable()
 export class PropertyService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -22,14 +19,14 @@ export class PropertyService {
         limit = 5,
         location,
         minPrice = 0,
-        maxPrice = 999999999999999,
+        maxPrice = 999999999,
         featureType,
         propertyType,
         search,
       } = query;
 
       const skip = (+page - 1) * +limit;
-      console.log(search);
+      
       const whereClause: any = {
         location,
         featureType,
@@ -59,6 +56,15 @@ export class PropertyService {
     }
   }
 
+  async updateProperty(propertyId: string, property: UpdatePropertyDto){
+    try {
+        const updatedProperty = await this.prismaService.property.update({where:{id:propertyId},data:property})
+        return updatedProperty
+    } catch (error) {
+        throw new HttpException(error.message, error.status);
+    }
+  }
+
   async findOne(id: string) {
     try {
       const property = await this.prismaService.property.findUnique({
@@ -73,64 +79,29 @@ export class PropertyService {
     }
   }
 
-  async create(createPropertyDto: CreatePropertyDto) {
+
+
+  async createPropertyOwner(PropertyOwner:OwnerInformation) { 
     try {
-      const propertyOwner = await this.prismaService.propertyOwner.findUnique({
+      const checkProperyOwner = await this.prismaService.propertyOwner.findUnique({
         where: {
-          email: createPropertyDto.OwnerInformation.email,
+          email: PropertyOwner.email,
         },
       });
 
-      if (!propertyOwner) {
-        const CreateOwnerWithProperty = await this.prismaService.propertyOwner.create(
-          {
-            data: {
-              ...createPropertyDto.OwnerInformation,
-              property: {
-                create: createPropertyDto.propertyInformation,
-              },
-            },
-            include: {
-              property: true,
-            },
-          },
-        );
-        return CreateOwnerWithProperty;
-      }
-      const property = await this.prismaService.property.create({
-        data: {
-          ...createPropertyDto.propertyInformation,
-          Owner: {
-            connect: {
-              email: createPropertyDto.OwnerInformation.email,
-            },
-          },
-        },
+      if(checkProperyOwner) return checkProperyOwner.id
 
-        include: {
-          Owner: true,
+      const createPropertyOwner = await this.prismaService.propertyOwner.create(
+        {
+          data:PropertyOwner 
         },
-      });
-      return property;
+      );
+      return createPropertyOwner.id;
+
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      
     }
   }
-
-  async update(id: string, updatePropertyDto: UpdatePropertyDto) {
-    try {
-      const CreatedProperty = await this.prismaService.property.update({
-        where: { id },
-        data: {
-          ...updatePropertyDto,
-        },
-      });
-      return CreatedProperty;
-    } catch (error) {
-      throw new HttpException(error.message, error.status);
-    }
-  }
-
   async remove(id: string) {
     try {
       const CreatedProperty = await this.prismaService.property.delete({
@@ -141,4 +112,27 @@ export class PropertyService {
       throw new HttpException(error.message, error.status);
     }
   }
+  
+  async createProperty(ownerId: string, property: PropertyInformation){
+    try {
+        const createdProperty = await this.prismaService.property.create({
+            data: {
+              ...property,
+              Owner: {
+                connect: {
+                  id : ownerId
+                },
+              },
+            },
+            include: {
+              Owner: true,
+            },
+          });
+        return createdProperty;
+    } catch (error) {
+        throw new HttpException(error.message, error.status);
+    }
+
+}
+
 }

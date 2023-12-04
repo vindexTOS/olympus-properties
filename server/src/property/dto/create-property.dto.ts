@@ -5,6 +5,7 @@ export class CreatePropertyDto {
 
     OwnerInformation:  OwnerInformation;
     propertyInformation : PropertyInformation;
+  static OwnerInformation: any;
   
 }
 export class OwnerInformation {
@@ -16,6 +17,7 @@ export class OwnerInformation {
     email: string;
     @IsNotEmpty()
     phoneNumber: string;
+  id: any;
 }
 
 export class PropertyInformation {
